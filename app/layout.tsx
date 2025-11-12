@@ -17,10 +17,10 @@ export const metadata: Metadata = {
   description: "TeleHealth Platform",
   icons: {
     icon: [
-      { url: "/images/icons.jpg", sizes: "32x32", type: "image/png" },
-      { url: "/images/icons.jpg", sizes: "16x16", type: "image/png" },
+      { url: "/images/icon.jpg", sizes: "32x32", type: "image/png" },
+      { url: "/images/icon.jpg", sizes: "16x16", type: "image/png" },
     ],
-    apple: "/images/icons.jpg",
+    apple: "/images/icon.jpg",
   },
 };
 
