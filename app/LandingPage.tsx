@@ -140,6 +140,10 @@ const LandingPage = () => {
         <div className="absolute top-96 left-12 w-3 h-3 bg-[#B8D4E8] rounded-full  animate-pulse"></div>
       </div>
 
+      <div className="absolute opacity-10 bg-white">
+        <div className="bg-[#EFF1FA] w-[1732px] h-[208px] top-[1640px]"></div>
+      </div>
+
       <style jsx>{`
         @keyframes float {
           0%,
