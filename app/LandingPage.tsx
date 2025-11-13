@@ -11,7 +11,7 @@ const LandingPage = () => {
         <div className="text-4xl font-bold text-[#0c1e66]">
           Tele<span className="text-[#6685FF]">Health</span>
         </div>
-        <div className="flex gap-12 text-lg font-medium">
+        <div className="flex gap-12 text-lg font-extralight">
           <a
             href="#home"
             className="text-[#000000] hover:text-[#6685FF] transition font-roboto"
