@@ -1,8 +1,9 @@
 "use client";
 
+import type { MouseEvent } from "react";
 import { useEffect, useState } from "react";
 
-const LandingPage = () => {
+const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -18,12 +19,29 @@ const LandingPage = () => {
     "Contacts",
   ];
 
-  const handleNavClick = () => {
+  const getSectionId = (label: string) =>
+    label.toLowerCase().replace(/\s+/g, "-");
+
+  const handleMenuItemClick = (
+    event: MouseEvent<HTMLAnchorElement>,
+    sectionId: string
+  ) => {
+    event.preventDefault();
+
+    if (sectionId === "home") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      const targetElement = document.getElementById(sectionId);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+
     setIsMenuOpen(false);
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-b from-gray-50 to-white overflow-hidden">
+    <div className="min-h-screen bg-linear-to-b from-gray-50 to-white overflow-x-hidden">
       <nav className="relative top-0 left-0 right-0 z-50 bg-white/80">
         <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-20 py-6">
           <div className="flex items-center justify-between">
@@ -37,16 +55,21 @@ const LandingPage = () => {
             </div>
 
             <div className="hidden lg:flex items-center gap-12 xl:gap-[72px]">
-              {menuItems.map((item, index) => (
-                <a
-                  key={item}
-                  href={`#${item.toLowerCase().replace(" ", "-")}`}
-                  className={`text-xl font-normal font-roboto text-black hover:text-[#6685FF] transition-all duration-300 transform hover:scale-105 ${isVisible ? "translate-y-0 opacity-100" : "-translate-y-10 opacity-0"}`}
-                  style={{ transitionDelay: `${100 + index * 50}ms` }}
-                >
-                  {item}
-                </a>
-              ))}
+              {menuItems.map((item, index) => {
+                const sectionId = getSectionId(item);
+
+                return (
+                  <a
+                    key={item}
+                    href={`#${sectionId}`}
+                    onClick={(event) => handleMenuItemClick(event, sectionId)}
+                    className={`text-xl font-normal font-roboto text-black hover:text-[#6685FF] transition-all duration-300 transform hover:scale-105 ${isVisible ? "translate-y-0 opacity-100" : "-translate-y-10 opacity-0"}`}
+                    style={{ transitionDelay: `${100 + index * 50}ms` }}
+                  >
+                    {item}
+                  </a>
+                );
+              })}
             </div>
 
             <div className="flex items-center gap-4">
@@ -100,25 +123,29 @@ const LandingPage = () => {
           {isMenuOpen && (
             <div className="lg:hidden mt-4 rounded-3xl border border-gray-200 bg-white p-4 shadow-xl">
               <div className="flex flex-col gap-4">
-                {menuItems.map((item) => (
-                  <a
-                    key={item}
-                    href={`#${item.toLowerCase().replace(" ", "-")}`}
-                    onClick={handleNavClick}
-                    className="text-lg font-medium text-[#080f2b] transition-colors duration-200 hover:text-[#6685FF]"
-                  >
-                    {item}
-                  </a>
-                ))}
+                {menuItems.map((item) => {
+                  const sectionId = getSectionId(item);
+
+                  return (
+                    <a
+                      key={item}
+                      href={`#${sectionId}`}
+                      onClick={(event) => handleMenuItemClick(event, sectionId)}
+                      className="text-lg font-medium text-[#080f2b] transition-colors duration-200 hover:text-[#6685FF]"
+                    >
+                      {item}
+                    </a>
+                  );
+                })}
                 <div className="flex flex-col gap-3 pt-4 border-t border-gray-100">
                   <button
-                    onClick={handleNavClick}
+                    onClick={() => setIsMenuOpen(false)}
                     className="w-full rounded-2xl border-2 border-gray-200 px-6 py-3 text-lg font-semibold text-[#061242] transition-all duration-200 hover:border-[#6685FF] hover:text-[#6685FF]"
                   >
                     Login
                   </button>
                   <button
-                    onClick={handleNavClick}
+                    onClick={() => setIsMenuOpen(false)}
                     className="w-full rounded-2xl bg-[#6685FF] px-6 py-3 text-lg font-semibold text-white transition-all duration-200 hover:bg-[#5574ee]"
                   >
                     Sign Up
@@ -171,6 +198,7 @@ const LandingPage = () => {
         <div className="absolute top-1/3 right-20 w-24 h-24 bg-[#9EB1FE]/10 rounded-full blur-xl animate-float-delayed"></div>
         <div className="absolute bottom-1/4 left-1/4 w-20 h-20 bg-[#6685FF]/10 rounded-full blur-xl animate-float-slow"></div>
       </section>
+
       <style jsx>{`
         @keyframes float {
           0%,
@@ -219,4 +247,4 @@ const LandingPage = () => {
     </div>
   );
 };
-export default LandingPage;
+export default HeroSection;
