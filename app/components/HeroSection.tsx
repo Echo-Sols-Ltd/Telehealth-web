@@ -2,14 +2,35 @@
 
 import type { MouseEvent } from "react";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import TeleHealthLoading from "./loadingScreen";
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
+  const [targetPath, setTargetPath] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     setIsVisible(true);
   }, []);
+
+  useEffect(() => {
+    if (showLoading && targetPath) {
+      // Show loading screen for 10 seconds before navigation
+      const timer = setTimeout(() => {
+        router.push(targetPath);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showLoading, targetPath, router]);
+
+  const handleAuthClick = (path: string) => {
+    setTargetPath(path);
+    setShowLoading(true);
+  };
 
   const menuItems = [
     "Home",
@@ -39,6 +60,10 @@ const HeroSection = () => {
 
     setIsMenuOpen(false);
   };
+
+  if (showLoading) {
+    return <TeleHealthLoading />;
+  }
 
   return (
     <div className="min-h-screen bg-linear-to-b from-gray-50 to-white overflow-x-hidden">
@@ -74,12 +99,14 @@ const HeroSection = () => {
 
             <div className="flex items-center gap-4">
               <button
+                onClick={() => handleAuthClick("/login")}
                 className={`hidden sm:block px-8 lg:px-12 py-4 lg:py-5 text-xl lg:text-2xl font-semibold font-roboto-flex text-[#061242] bg-white border-2 border-gray-200 rounded-4xl hover:border-[#6685FF] hover:text-[#6685FF] transition-all duration-300 transform hover:scale-105 hover:shadow-lg ${isVisible ? "translate-x-0 opacity-100" : "translate-x-20 opacity-0"}`}
                 style={{ transitionDelay: "400ms" }}
               >
                 Login
               </button>
               <button
+                onClick={() => handleAuthClick("/signup")}
                 className={`hidden lg:block px-6 sm:px-8 lg:px-12 py-4 lg:py-5 text-xl lg:text-2xl font-semibold font-roboto-flex text-white bg-[#6685FF] rounded-4xl hover:bg-[#5574ee] transition-all duration-300 transform hover:scale-105 hover:shadow-xl ${isVisible ? "translate-x-0 opacity-100" : "translate-x-20 opacity-0"}`}
                 style={{ transitionDelay: "500ms" }}
               >
@@ -139,13 +166,19 @@ const HeroSection = () => {
                 })}
                 <div className="flex flex-col gap-3 pt-4 border-t border-gray-100">
                   <button
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                      handleAuthClick("/login");
+                    }}
                     className="w-full rounded-2xl border-2 border-gray-200 px-6 py-3 text-lg font-semibold text-[#061242] transition-all duration-200 hover:border-[#6685FF] hover:text-[#6685FF]"
                   >
                     Login
                   </button>
                   <button
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                      handleAuthClick("/signup");
+                    }}
                     className="w-full rounded-2xl bg-[#6685FF] px-6 py-3 text-lg font-semibold text-white transition-all duration-200 hover:bg-[#5574ee]"
                   >
                     Sign Up
