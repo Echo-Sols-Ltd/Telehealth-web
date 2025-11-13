@@ -21,7 +21,7 @@ const HeroSection = () => {
       // Show loading screen for 10 seconds before navigation
       const timer = setTimeout(() => {
         router.push(targetPath);
-      }, 5000);
+      }, 3000);
 
       return () => clearTimeout(timer);
     }

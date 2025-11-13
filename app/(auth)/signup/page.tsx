@@ -129,15 +129,15 @@ export default function TeleHealthSignUp() {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex flex-col lg:flex-row h-screen lg:overflow-hidden">
       {/* Left side - Loading Screen Content (hidden on mobile) */}
-      <div className="hidden lg:flex w-2/5 bg-[#6685FF] items-center justify-center">
+      <div className="hidden lg:flex w-2/5 bg-[#6685FF] items-center justify-center lg:h-screen">
         <LoadingScreenContent />
       </div>
 
       {/* Right side - Form */}
-      <div className="w-full lg:w-3/5 bg-gray-50 flex items-center justify-center p-4 sm:p-8 lg:p-12 overflow-y-auto">
-        <div className="w-full max-w-2xl">
+      <div className="w-full lg:w-3/5 bg-gray-50 p-4 sm:p-8 lg:p-12 lg:overflow-y-auto lg:flex lg:items-center lg:justify-center overflow-y-auto">
+        <div className="w-full max-w-2xl lg:py-0 py-8">
           <h2
             className="text-4xl font-bold text-center mb-8"
             style={{ color: "#6685FF" }}

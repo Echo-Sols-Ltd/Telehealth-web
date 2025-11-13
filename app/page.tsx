@@ -16,7 +16,7 @@ export default function Home() {
     // Show loading screen for 10 seconds on initial load
     const timer = setTimeout(() => {
       setShowLoading(false);
-    }, 5000);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, []);
