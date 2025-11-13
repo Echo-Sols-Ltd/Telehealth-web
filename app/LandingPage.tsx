@@ -1,210 +1,222 @@
 "use client";
-import Image from "next/image";
-import React from "react";
-import { Stethoscope, MapPinCheckInside } from "lucide-react";
+
+import { useEffect, useState } from "react";
 
 const LandingPage = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
+  const menuItems = [
+    "Home",
+    "Features",
+    "How it works",
+    "Accessibility",
+    "Contacts",
+  ];
+
+  const handleNavClick = () => {
+    setIsMenuOpen(false);
+  };
+
   return (
-    <div className="min-h-screen bg-linear-to-br from-gray-50 to-white overflow-hidden relative">
-      {/* Navigation */}
-      <nav className="container mx-auto px-8 py-8 flex items-center justify-between">
-        <div className="text-4xl font-bold text-[#0c1e66]">
-          Tele<span className="text-[#6685FF]">Health</span>
-        </div>
-        <div className="flex gap-12 text-lg font-extralight">
-          <a
-            href="#home"
-            className="text-[#000000] hover:text-[#6685FF] transition font-roboto"
-          >
-            Home
-          </a>
-          <a
-            href="#features"
-            className="text-[#000000] hover:text-[#6685FF] transition font-roboto"
-          >
-            Features
-          </a>
-          <a
-            href="#how-it-works"
-            className="text-[#000000] hover:text-[#6685FF] transition font-roboto"
-          >
-            How it works
-          </a>
-          <a
-            href="#accessibility"
-            className="text-[#000000] hover:text-[#6685FF] transition font-roboto"
-          >
-            Accessibility
-          </a>
-          <a
-            href="#contacts"
-            className=" text-[#000000] hover:text-[#6685FF] transition font-roboto"
-          >
-            Contacts
-          </a>
+    <div className="min-h-screen bg-linear-to-b from-gray-50 to-white overflow-hidden">
+      <nav className="relative top-0 left-0 right-0 z-50 bg-white/80">
+        <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-20 py-6">
+          <div className="flex items-center justify-between">
+            <div
+              className={`transform transition-all duration-1000 ${isVisible ? "translate-x-0 opacity-100" : "-translate-x-20 opacity-0"}`}
+            >
+              <h1 className="text-3xl lg:text-[24px] font-bold leading-none">
+                <span className="text-[#080f2b]">Tele</span>
+                <span className="text-[#6685FF]">Health</span>
+              </h1>
+            </div>
+
+            <div className="hidden lg:flex items-center gap-12 xl:gap-[72px]">
+              {menuItems.map((item, index) => (
+                <a
+                  key={item}
+                  href={`#${item.toLowerCase().replace(" ", "-")}`}
+                  className={`text-xl font-normal font-roboto text-black hover:text-[#6685FF] transition-all duration-300 transform hover:scale-105 ${isVisible ? "translate-y-0 opacity-100" : "-translate-y-10 opacity-0"}`}
+                  style={{ transitionDelay: `${100 + index * 50}ms` }}
+                >
+                  {item}
+                </a>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-4">
+              <button
+                className={`hidden sm:block px-8 lg:px-12 py-4 lg:py-5 text-xl lg:text-2xl font-semibold font-roboto-flex text-[#061242] bg-white border-2 border-gray-200 rounded-4xl hover:border-[#6685FF] hover:text-[#6685FF] transition-all duration-300 transform hover:scale-105 hover:shadow-lg ${isVisible ? "translate-x-0 opacity-100" : "translate-x-20 opacity-0"}`}
+                style={{ transitionDelay: "400ms" }}
+              >
+                Login
+              </button>
+              <button
+                className={`hidden lg:block px-6 sm:px-8 lg:px-12 py-4 lg:py-5 text-xl lg:text-2xl font-semibold font-roboto-flex text-white bg-[#6685FF] rounded-4xl hover:bg-[#5574ee] transition-all duration-300 transform hover:scale-105 hover:shadow-xl ${isVisible ? "translate-x-0 opacity-100" : "translate-x-20 opacity-0"}`}
+                style={{ transitionDelay: "500ms" }}
+              >
+                Sign Up
+              </button>
+            </div>
+
+            <button
+              className="lg:hidden p-2 text-[#6685FF] transition-transform duration-300"
+              onClick={() => setIsMenuOpen((prev) => !prev)}
+              aria-label={
+                isMenuOpen ? "Close navigation menu" : "Open navigation menu"
+              }
+              aria-expanded={isMenuOpen}
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                {isMenuOpen ? (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 6l12 12M18 6l-12 12"
+                  />
+                ) : (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                )}
+              </svg>
+            </button>
+          </div>
+
+          {isMenuOpen && (
+            <div className="lg:hidden mt-4 rounded-3xl border border-gray-200 bg-white p-4 shadow-xl">
+              <div className="flex flex-col gap-4">
+                {menuItems.map((item) => (
+                  <a
+                    key={item}
+                    href={`#${item.toLowerCase().replace(" ", "-")}`}
+                    onClick={handleNavClick}
+                    className="text-lg font-medium text-[#080f2b] transition-colors duration-200 hover:text-[#6685FF]"
+                  >
+                    {item}
+                  </a>
+                ))}
+                <div className="flex flex-col gap-3 pt-4 border-t border-gray-100">
+                  <button
+                    onClick={handleNavClick}
+                    className="w-full rounded-2xl border-2 border-gray-200 px-6 py-3 text-lg font-semibold text-[#061242] transition-all duration-200 hover:border-[#6685FF] hover:text-[#6685FF]"
+                  >
+                    Login
+                  </button>
+                  <button
+                    onClick={handleNavClick}
+                    className="w-full rounded-2xl bg-[#6685FF] px-6 py-3 text-lg font-semibold text-white transition-all duration-200 hover:bg-[#5574ee]"
+                  >
+                    Sign Up
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </nav>
 
-      {/* Main Hero Content */}
-      <div className="container mx-auto px-8 mt-20 relative">
-        <div className="grid grid-cols-2 gap-8 items-center">
-          {/* Left Content */}
-          <div className="relative z-10">
-            <h5 className="text-[50px] font-bold leading-[74px] mb-6 text-[#000000] font-roboto">
-              Manage Your Chronic Conditions Easily.
-            </h5>
-            <p className="text-[28px] font-light leading-[44px] text-[#000000] mb-12">
-              Take charge of your health with TeleHealth Anytime, anywhere, care
-              is always within your reach.
-            </p>
-            <div className="flex gap-6">
-              <button className="px-20 py-6 bg-white border border-[#D1DAFF] rounded-[20px] text-[#6685FF] font-semibold text-lg hover:bg-[#6685FF] hover:text-white transition shadow-sm">
+      <section className="pt-32 sm:pt-40 lg:pt-48 pb-16 sm:pb-20 lg:pb-24 px-4 sm:px-6 lg:px-20">
+        <div className="max-w-[1400px] mx-auto text-center">
+          <h2
+            className={`text-2xl sm:text-4xl lg:text-[60px] font-bold font-roboto leading-tight lg:leading-[114px] mb-6 sm:mb-8 lg:mb-10 transform transition-all duration-1000 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0"}`}
+            style={{ transitionDelay: "200ms" }}
+          >
+            <span className="text-black">Manage Your </span>
+            <span className="text-[#9EB1FE] block sm:inline animate-pulse">
+              Chronic Conditions
+            </span>
+            <span className="text-black block mt-2 sm:mt-0">Easily.</span>
+          </h2>
+
+          <p
+            className={`text-lg sm:text-xl lg:text-[28px] font-light font-roboto-flex leading-relaxed lg:leading-[44px] text-black max-w-[1100px] mx-auto mb-10 sm:mb-12 lg:mb-16 transform transition-all duration-1000 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0"}`}
+            style={{ transitionDelay: "400ms" }}
+          >
+            Take charge of your health with TeleHealth Anytime, anywhere,{" "}
+            <br className="hidden sm:block" />
+            care is always within your reach
+          </p>
+
+          <div
+            className={`flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8 transform transition-all duration-1000 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0"}`}
+            style={{ transitionDelay: "600ms" }}
+          >
+            <button className="w-full sm:w-auto min-w-[250px] sm:min-w-[200px] h-[90px] bg-[#6685FF] text-white text-xl font-semibold font-roboto-flex rounded-[40px] hover:bg-[#5574ee] transition-all duration-300 transform hover:scale-105 hover:shadow-2xl active:scale-95 group ">
+              <span className="inline-block group-hover:animate-bounce">
                 Get Started
-              </button>
-              <button className="px-20 py-6 bg-[#6685FF] rounded-[20px] text-white font-semibold text-lg hover:bg-[#5575EE] transition shadow-lg">
-                Learn more
-              </button>
-            </div>
+              </span>
+            </button>
+            <button className="w-full sm:w-auto min-w-[250px] sm:min-w-[200px] h-[80px] sm:h-[90px] bg-white text-black text-2xl font-semibold font-roboto-flex rounded-[40px] border border-black hover:bg-black hover:text-white transition-all duration-300 transform hover:scale-105 hover:shadow-2xl active:scale-95">
+              Learn More
+            </button>
           </div>
-
-          {/* Right Content - Phone Illustration */}
-          <div className="relative h-[700px]">
-            {/* Background Elements */}
-            <Image
-              src="/images/ellipsebig.png"
-              alt="Ellipse"
-              width={512}
-              height={20}
-              className="absolute top-[12px] left-[200px] opacity-100 bg-[#C4F0EC] rounded-full z-10"
-            />
-            <Image
-              src="/images/ellipse1.png"
-              alt="Ellipse2"
-              width={380}
-              height={350}
-              className="absolute top-[160px] left-[120px] opacity-100 rounded-full bg-[#C4F0EC] z-20"
-            />
-
-            <Image
-              src="/images/mobile.png"
-              alt="mobile"
-              width={635}
-              height={544}
-              className="absolute top-[80px] left-[180px] z-30"
-            />
-            <Image
-              src="/images/ellipse2.png"
-              alt="Ellipse"
-              width={1750}
-              height={11120}
-              className="absolute top-[520px] left-[200px] z-0"
-            />
-
-            {/* Floating Icons */}
-            <div className="absolute top-5 left-80 w-[70px] h-[70px] opacity-100 rotate-0 bg-[#F5D88F] z-10 rounded-full flex items-center justify-center animate-orbit">
-              <Stethoscope className="text-white w-[30px] h-[30px]" />
-            </div>
-
-            <div className="absolute top-[360px] left-44 w-[70px] h-[70px] opacity-100 rotate-0 bg-[#F5D88F] z-30 rounded-full flex items-center justify-center animate-orbit-delayed">
-              <MapPinCheckInside className="text-white w-[30px] h-[30px]" />
-            </div>
-          </div>
-
-          {/* Health Card */}
         </div>
 
-        {/* Upcoming Consultation Card */}
-
-        {/* Doctor Card */}
-
-        {/* Decorative Plus Signs */}
-        <div className="absolute top-20 left-8 text-gray-300 text-4xl font-light animate-spin-slow">
-          +
-        </div>
-        <div className="absolute top-40 right-1/3 text-gray-300 text-4xl font-light animate-spin-slow">
-          +
-        </div>
-        <div className="absolute bottom-40 left-1/4 text-gray-300 text-4xl font-light animate-spin-slow">
-          +
-        </div>
-        <div className="absolute top-32 right-48 text-gray-300 text-4xl font-light animate-spin-slow">
-          +
-        </div>
-
-        {/* Decorative Dots */}
-        <div className="absolute top-32 left-20 w-4 h-4 bg-[#C4F0EC] rounded-full animate-pulse"></div>
-        <div className="absolute top-64 right-24 w-3 h-3 bg-[#B8D4E8] rounded-full   animate-pulse"></div>
-        <div className="absolute bottom-32 left-1/3 w-4 h-4 bg-[#E8F4F2] rounded-full  animate-pulse"></div>
-        <div className="absolute top-48 right-1/4 w-3 h-3 bg-[#D1E8E2] rounded-full  animate-pulse"></div>
-        <div className="absolute bottom-64 right-12 w-4 h-4 bg-[#C4F0EC] rounded-full animate-pulse "></div>
-        <div className="absolute top-96 left-12 w-3 h-3 bg-[#B8D4E8] rounded-full  animate-pulse"></div>
-      </div>
-
-      <div className="absolute opacity-10 bg-white">
-        <div className="bg-[#EFF1FA] w-[1732px] h-[208px] top-[1640px]"></div>
-      </div>
-
+        <div className="absolute top-1/4 left-10 w-16 h-16 bg-[#6685FF]/10 rounded-full blur-xl animate-float"></div>
+        <div className="absolute top-1/3 right-20 w-24 h-24 bg-[#9EB1FE]/10 rounded-full blur-xl animate-float-delayed"></div>
+        <div className="absolute bottom-1/4 left-1/4 w-20 h-20 bg-[#6685FF]/10 rounded-full blur-xl animate-float-slow"></div>
+      </section>
       <style jsx>{`
         @keyframes float {
           0%,
           100% {
-            transform: translateY(0px);
+            transform: translateY(0) scale(1);
           }
           50% {
-            transform: translateY(-20px);
+            transform: translateY(-20px) scale(1.1);
           }
         }
+
         @keyframes float-delayed {
           0%,
           100% {
-            transform: translateY(0px);
+            transform: translateY(0) scale(1);
           }
           50% {
-            transform: translateY(-15px);
+            transform: translateY(-30px) scale(1.15);
           }
         }
-        @keyframes orbit {
-          0% {
-            transform: rotate(0deg) translateX(15px) rotate(0deg);
-          }
+
+        @keyframes float-slow {
+          0%,
           100% {
-            transform: rotate(360deg) translateX(15px) rotate(-360deg);
+            transform: translateY(0) scale(1);
+          }
+          50% {
+            transform: translateY(-15px) scale(1.05);
           }
         }
-        @keyframes orbit-delayed {
-          0% {
-            transform: rotate(0deg) translateX(20px) rotate(0deg);
-          }
-          100% {
-            transform: rotate(360deg) translateX(20px) rotate(-360deg);
-          }
-        }
-        @keyframes spin-slow {
-          0% {
-            transform: rotate(0deg);
-          }
-          100% {
-            transform: rotate(360deg);
-          }
-        }
+
         .animate-float {
-          animation: float 3s ease-in-out infinite;
+          animation: float 4s ease-in-out infinite;
         }
+
         .animate-float-delayed {
-          animation: float-delayed 3s ease-in-out infinite 1.5s;
+          animation: float-delayed 5s ease-in-out infinite;
+          animation-delay: 1s;
         }
-        .animate-orbit {
-          animation: orbit 8s linear infinite;
-        }
-        .animate-orbit-delayed {
-          animation: orbit-delayed 10s linear infinite;
-        }
-        .animate-spin-slow {
-          animation: spin-slow 20s linear infinite;
+
+        .animate-float-slow {
+          animation: float-slow 6s ease-in-out infinite;
+          animation-delay: 2s;
         }
       `}</style>
     </div>
   );
 };
-
 export default LandingPage;
