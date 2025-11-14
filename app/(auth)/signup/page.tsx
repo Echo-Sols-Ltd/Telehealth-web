@@ -5,6 +5,10 @@ import { useRouter } from "next/navigation";
 import LoadingScreenContent from "../../components/LoadingScreenContent";
 import { FormData, FormErrors } from "../../../types";
 import { mockStorage } from "../../../types/mockData";
+import {
+  sendVerificationEmail,
+  TELEHEALTH_SENDER_EMAIL,
+} from "../../../services/mockEmailService";
 
 export default function TeleHealthSignUp() {
   const [formData, setFormData] = useState<FormData>({
@@ -99,7 +103,16 @@ export default function TeleHealthSignUp() {
       mockStorage.set(`user:${formData.email}`, JSON.stringify(userData));
       mockStorage.set(`auth:${formData.email}`, formData.password);
 
-      alert(`Successfully signed up as ${formData.role}!`);
+      // Send verification email
+      const emailMessage = sendVerificationEmail(
+        formData.email,
+        formData.fullName
+      );
+
+      // Store email for verification page
+      if (typeof window !== "undefined") {
+        localStorage.setItem("pendingVerificationEmail", formData.email);
+      }
 
       setFormData({
         fullName: "",
@@ -112,10 +125,12 @@ export default function TeleHealthSignUp() {
         role: "patient",
       });
 
-      // Navigate to login after successful signup
+      // Navigate to email verification page after successful signup
       setTimeout(() => {
-        router.push("/login");
-      }, 1000);
+        router.push(
+          `/verify-email?email=${encodeURIComponent(formData.email)}`
+        );
+      }, 500);
     } catch (error) {
       alert("Error signing up. Please try again.");
       console.error("Signup error:", error);
@@ -153,7 +168,7 @@ export default function TeleHealthSignUp() {
               className={`flex-1 py-3 px-6 rounded-lg font-semibold transition-all ${
                 formData.role === "patient"
                   ? "bg-[#6685FF] text-white shadow-md"
-                  : "bg-white text-gray-600 border border-gray-300"
+                  : "bg-white text-black/80 border border-gray-300"
               }`}
             >
               Patient
@@ -165,7 +180,7 @@ export default function TeleHealthSignUp() {
               className={`flex-1 py-3 px-6 rounded-lg font-semibold transition-all ${
                 formData.role === "doctor"
                   ? "bg-[#6685FF] text-white shadow-md"
-                  : "bg-white text-gray-600 border border-gray-300"
+                  : "bg-white text-black/80 border border-gray-300"
               }`}
             >
               Doctor

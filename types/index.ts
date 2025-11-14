@@ -35,3 +35,17 @@ export interface MockUser {
   role: "patient" | "doctor";
   userData: UserData;
 }
+
+export interface EmailVerificationState {
+  email: string;
+  isVerified: boolean;
+  verificationCode?: string;
+  expiresAt?: Date;
+}
+
+export type EmailVerificationAction =
+  | { type: "SET_EMAIL"; payload: string }
+  | { type: "SET_VERIFIED"; payload: boolean }
+  | { type: "SET_VERIFICATION_CODE"; payload: string }
+  | { type: "SET_EXPIRES_AT"; payload: Date }
+  | { type: "RESET" };
