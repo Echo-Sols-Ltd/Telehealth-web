@@ -24,9 +24,9 @@ export default function LoadingScreenContent() {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center p-8">
       <div className="mb-8">
-        <h1 className="text-5xl font-bold">
+        <h1 className="text-5xl font-bold font-roboto-flex">
           <span className="text-white">Tele</span>
-          <span className="text-blue-200">Health</span>
+          <span className="text-[#2C37E1]">Health</span>
         </h1>
       </div>
 

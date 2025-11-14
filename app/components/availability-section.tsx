@@ -38,10 +38,10 @@ export default function AccessibilitySection() {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          <h2 className="font-sans font-black text-4xl md:text-5xl text-black mb-4">
+          <h2 className="font-roboto font-extrabold text-6xl md:text-5xl text-black mb-4">
             Healthcare for Everyone, Everywhere
           </h2>
-          <p className="font-sans font-normal text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="font-roboto font-normal text-xl text-black max-w-2xl mx-auto">
             TeleHealth is designed to be inclusive, accessible, and easy to use
             across all devices and abilities.
           </p>
@@ -53,7 +53,7 @@ export default function AccessibilitySection() {
             isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
           }`}
         >
-          <div className="w-full max-w-2xl h-64 md:h-80 relative">
+          <div className="w-full max-w-6xl h-64 md:h-80 relative">
             <Image
               src="/images/accessible.png"
               alt="Healthcare accessibility illustration"

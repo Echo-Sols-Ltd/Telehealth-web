@@ -139,7 +139,7 @@ export default function TeleHealthSignUp() {
       <div className="w-full lg:w-3/5 bg-gray-50 p-4 sm:p-8 lg:p-12 lg:overflow-y-auto lg:flex lg:items-center lg:justify-center overflow-y-auto">
         <div className="w-full max-w-2xl lg:py-0 py-8">
           <h2
-            className="text-4xl font-bold text-center mb-8"
+            className="text-5xl font-bold text-center mb-8 font-roboto-flex"
             style={{ color: "#6685FF" }}
           >
             Sign Up
@@ -174,7 +174,7 @@ export default function TeleHealthSignUp() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2 font-roboto-flex">
                 Full Name
               </label>
               <input
@@ -182,17 +182,19 @@ export default function TeleHealthSignUp() {
                 name="fullName"
                 value={formData.fullName}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 rounded-lg border ${
+                className={`w-full px-4 py-3 rounded-lg border font-roboto-flex ${
                   errors.fullName ? "border-red-500" : "border-gray-300"
                 } focus:outline-none focus:ring-2 focus:ring-[#6685FF]`}
               />
               {errors.fullName && (
-                <p className="text-red-500 text-xs mt-1">{errors.fullName}</p>
+                <p className="text-red-500 text-xs mt-1 font-roboto-flex">
+                  {errors.fullName}
+                </p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2 font-roboto-flex">
                 National ID
               </label>
               <input
@@ -200,17 +202,19 @@ export default function TeleHealthSignUp() {
                 name="nationalId"
                 value={formData.nationalId}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 rounded-lg border ${
+                className={`w-full px-4 py-3 rounded-lg border font-roboto-flex ${
                   errors.nationalId ? "border-red-500" : "border-gray-300"
                 } focus:outline-none focus:ring-2 focus:ring-[#6685FF]`}
               />
               {errors.nationalId && (
-                <p className="text-red-500 text-xs mt-1">{errors.nationalId}</p>
+                <p className="text-red-500 text-xs mt-1 font-roboto-flex">
+                  {errors.nationalId}
+                </p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2 font-roboto-flex">
                 Email
               </label>
               <input
@@ -218,17 +222,19 @@ export default function TeleHealthSignUp() {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 rounded-lg border ${
+                className={`w-full px-4 py-3 rounded-lg border font-roboto-flex ${
                   errors.email ? "border-red-500" : "border-gray-300"
                 } focus:outline-none focus:ring-2 focus:ring-[#6685FF]`}
               />
               {errors.email && (
-                <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+                <p className="text-red-500 text-xs mt-1 font-roboto-flex">
+                  {errors.email}
+                </p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2 font-roboto-flex">
                 Medical Code {formData.role === "patient" && "(Optional)"}
               </label>
               <input
@@ -237,21 +243,21 @@ export default function TeleHealthSignUp() {
                 value={formData.medicalCode}
                 onChange={handleChange}
                 disabled={formData.role === "patient"}
-                className={`w-full px-4 py-3 rounded-lg border ${
+                className={`w-full px-4 py-3 rounded-lg border font-roboto-flex ${
                   errors.medicalCode ? "border-red-500" : "border-gray-300"
                 } focus:outline-none focus:ring-2 focus:ring-[#6685FF] ${
                   formData.role === "patient" ? "bg-gray-100" : ""
                 }`}
               />
               {errors.medicalCode && (
-                <p className="text-red-500 text-xs mt-1">
+                <p className="text-red-500 text-xs mt-1 font-roboto-flex">
                   {errors.medicalCode}
                 </p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2 font-roboto-flex">
                 Create Password
               </label>
               <input
@@ -259,17 +265,19 @@ export default function TeleHealthSignUp() {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 rounded-lg border ${
+                className={`w-full px-4 py-3 rounded-lg border font-roboto-flex ${
                   errors.password ? "border-red-500" : "border-gray-300"
                 } focus:outline-none focus:ring-2 focus:ring-[#6685FF]`}
               />
               {errors.password && (
-                <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+                <p className="text-red-500 text-xs mt-1 font-roboto-flex">
+                  {errors.password}
+                </p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2 font-roboto-flex">
                 Phone Number
               </label>
               <input
@@ -277,12 +285,12 @@ export default function TeleHealthSignUp() {
                 name="phoneNumber"
                 value={formData.phoneNumber}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 rounded-lg border ${
+                className={`w-full px-4 py-3 rounded-lg border font-roboto-flex ${
                   errors.phoneNumber ? "border-red-500" : "border-gray-300"
                 } focus:outline-none focus:ring-2 focus:ring-[#6685FF]`}
               />
               {errors.phoneNumber && (
-                <p className="text-red-500 text-xs mt-1">
+                <p className="text-red-500 text-xs mt-1 font-roboto-flex">
                   {errors.phoneNumber}
                 </p>
               )}
@@ -290,7 +298,7 @@ export default function TeleHealthSignUp() {
           </div>
 
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2 font-roboto-flex">
               Repeat Password
             </label>
             <input
@@ -298,12 +306,12 @@ export default function TeleHealthSignUp() {
               name="repeatPassword"
               value={formData.repeatPassword}
               onChange={handleChange}
-              className={`w-full px-4 py-3 rounded-lg border ${
+              className={`w-full px-4 py-3 rounded-lg border font-roboto-flex ${
                 errors.repeatPassword ? "border-red-500" : "border-gray-300"
               } focus:outline-none focus:ring-2 focus:ring-[#6685FF]`}
             />
             {errors.repeatPassword && (
-              <p className="text-red-500 text-xs mt-1">
+              <p className="text-red-500 text-xs mt-1 font-roboto-flex">
                 {errors.repeatPassword}
               </p>
             )}
@@ -312,7 +320,7 @@ export default function TeleHealthSignUp() {
           <button
             onClick={handleSubmit}
             disabled={isLoading}
-            className="w-full py-3 px-6 rounded-lg font-semibold text-white transition-all shadow-md hover:shadow-lg disabled:opacity-50"
+            className="w-full py-3 px-6 rounded-lg font-semibold text-white transition-all shadow-md hover:shadow-lg disabled:opacity-50 font-roboto-flex"
             style={{ backgroundColor: "#6685FF" }}
           >
             {isLoading ? "Creating Account..." : "Finish"}
@@ -320,7 +328,9 @@ export default function TeleHealthSignUp() {
 
           <div className="flex items-center my-6">
             <div className="flex-1 border-t border-gray-300"></div>
-            <span className="px-4 text-gray-500 text-sm">Sign up with</span>
+            <span className="px-4 text-gray-500 text-sm font-roboto-flex">
+              Sign up with
+            </span>
             <div className="flex-1 border-t border-gray-300"></div>
           </div>
 
@@ -374,11 +384,11 @@ export default function TeleHealthSignUp() {
             </button>
           </div>
 
-          <p className="text-center text-gray-600">
+          <p className="text-center text-gray-600 text-base sm:text-lg font-roboto-flex">
             Already have an account?{" "}
             <button
               onClick={() => router.push("/login")}
-              className="font-semibold hover:underline"
+              className="font-semibold hover:underline font-roboto-flex"
               style={{ color: "#6685FF" }}
             >
               Log In

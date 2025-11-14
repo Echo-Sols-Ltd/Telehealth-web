@@ -85,13 +85,13 @@ export default function HowItWorks() {
                   />
 
                   {/* Title */}
-                  <h3 className="font-sans font-black text-2xl mb-4 leading-tight">
+                  <h3 className="font-roboto font-extrabold text-2xl mb-4 leading-tight">
                     {step.title}
                   </h3>
 
                   {/* Description */}
                   <p
-                    className={`font-sans font-normal text-sm leading-relaxed ${
+                    className={`font-roboto font-normal text-sm leading-relaxed ${
                       isActive ? "text-white" : "text-gray-600"
                     }`}
                   >

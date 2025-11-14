@@ -45,8 +45,10 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand Section */}
           <div className="animate-fade-in">
-            <h3 className="font-sans font-black text-2xl mb-4">Telehealth</h3>
-            <p className="font-sans text-sm leading-relaxed mb-6 opacity-90">
+            <h3 className="font-roboto font-extrabold text-2xl mb-4">
+              Telehealth
+            </h3>
+            <p className="font-roboto font-normal text-lg leading-relaxed mb-6 opacity-90">
               Take charge of your health with Telehealth Anytime, anywhere, care
               is always within your reach.
             </p>
@@ -72,16 +74,18 @@ export default function Footer() {
           {Object.entries(footerLinks).map(([category, links], index) => (
             <div
               key={category}
-              className={`animate-fade-in transition-all duration-500`}
+              className={`animate-fade-in transition-all duration-500 font-roboto font-semibold`}
               style={{ animationDelay: `${(index + 1) * 100}ms` }}
             >
-              <h4 className="font-sans font-bold text-lg mb-4">{category}</h4>
+              <h4 className="font-roboto font-semibold text-lg mb-4">
+                {category}
+              </h4>
               <ul className="space-y-3">
                 {links.map((link) => (
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="font-sans text-sm opacity-90 hover:opacity-100 hover:underline transition-all duration-300 hover:translate-x-1 inline-block"
+                      className="font-roboto font-normal text-lg opacity-90 hover:opacity-100 hover:underline transition-all duration-300 hover:translate-x-1 inline-block"
                     >
                       {link.label}
                     </Link>
@@ -98,11 +102,11 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <Link
               href="#"
-              className="font-sans text-sm hover:opacity-80 transition-opacity"
+              className="font-roboto text-xl hover:opacity-80 transition-opacity font-semibold"
             >
               www.telehealth.com
             </Link>
-            <p className="font-sans text-xs opacity-75 text-center">
+            <p className="font-roboto font-normal text-xl opacity-75 text-center">
               © 2025 Telehealth. All rights reserved.
             </p>
           </div>

@@ -79,7 +79,7 @@ export default function LoginPage() {
       <div className="w-full lg:w-3/5 bg-gray-50 flex items-center justify-center p-4 sm:p-8 lg:p-12 overflow-y-auto">
         <div className="w-full max-w-md">
           <h2
-            className="text-3xl sm:text-4xl font-bold text-center mb-8"
+            className="text-4xl sm:text-5xl font-bold text-center mb-8 font-roboto-flex"
             style={{ color: "#6685FF" }}
           >
             Log In
@@ -89,7 +89,7 @@ export default function LoginPage() {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="block text-base  text-black font-light font-roboto-flex"
               >
                 Email
               </label>
@@ -100,7 +100,7 @@ export default function LoginPage() {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6685FF]"
+                className="w-full px-5 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6685FF] font-roboto-flex font-light text-black/50"
                 placeholder="Enter your email"
               />
             </div>
@@ -108,7 +108,7 @@ export default function LoginPage() {
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="block text-base font-light text-black mb-2 font-roboto-flex"
               >
                 Password
               </label>
@@ -119,7 +119,7 @@ export default function LoginPage() {
                 value={formData.password}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6685FF]"
+                className="w-full px-5 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6685FF] font-roboto-flex font-light text-black/50"
                 placeholder="Enter your password"
               />
             </div>
@@ -131,7 +131,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 px-6 rounded-lg font-semibold text-white transition-all shadow-md hover:shadow-lg disabled:opacity-50"
+              className="w-full py-5 px-6 rounded-lg font-semibold text-white transition-all shadow-md hover:shadow-lg disabled:opacity-50 font-roboto-flex"
               style={{ backgroundColor: "#6685FF" }}
             >
               {isLoading ? "Logging in..." : "Log In"}
@@ -140,7 +140,9 @@ export default function LoginPage() {
 
           <div className="flex items-center my-6">
             <div className="flex-1 border-t border-gray-300"></div>
-            <span className="px-4 text-gray-500 text-sm">Sign in with</span>
+            <span className="px-4 text-gray-500 text-sm font-roboto-flex font-extralight">
+              Sign in with
+            </span>
             <div className="flex-1 border-t border-gray-300"></div>
           </div>
 
@@ -198,11 +200,11 @@ export default function LoginPage() {
             </button>
           </div>
 
-          <p className="text-center text-gray-600 text-sm sm:text-base">
+          <p className="text-center text-gray-600 text-base sm:text-lg font-light font-roboto-flex">
             Don't have an account?{" "}
             <button
               onClick={() => router.push("/signup")}
-              className="font-semibold hover:underline"
+              className="font-semibold hover:underline font-roboto-flex"
               style={{ color: "#6685FF" }}
             >
               Sign Up
