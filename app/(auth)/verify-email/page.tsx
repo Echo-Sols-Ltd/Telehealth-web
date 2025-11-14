@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import React, { useState, useEffect, useReducer } from "react";
 import { useSearchParams } from "next/navigation";
 import {
@@ -38,7 +40,6 @@ export default function EmailVerificationPage() {
 
     const email = emailFromParams || emailFromStorage || "";
     if (email) {
-      // Mask email for display
       const maskedEmail = maskEmail(email);
       dispatch({ type: "SET_EMAIL", payload: maskedEmail });
     }
@@ -64,15 +65,13 @@ export default function EmailVerificationPage() {
   const handleResendEmail = async () => {
     setIsResending(true);
 
-    // Get the original email (unmasked) from localStorage
     const originalEmail =
       typeof window !== "undefined"
         ? localStorage.getItem("pendingVerificationEmail")
         : null;
 
     if (originalEmail) {
-      // Resend verification email
-      const emailMessage = sendVerificationEmail(originalEmail);
+      sendVerificationEmail(originalEmail);
       setTimeout(() => {
         setIsResending(false);
         alert(
