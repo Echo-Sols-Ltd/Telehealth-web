@@ -8,7 +8,9 @@
   --font-roboto: "Roboto", sans-serif;
   --font-roboto-flex: "Roboto Flex", sans-serif;
   --font-poppins: "Poppins", sans-serif;
-  --font-mono: "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", monospace;
+  --font-mono:
+    "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono",
+    "Courier New", monospace;
 }
 
 @theme inline {
@@ -19,6 +21,8 @@
   --font-roboto-flex: var(--font-roboto-flex);
   --font-poppins: var(--font-poppins);
   --font-mono: var(--font-mono);
+  --font-sans: "Geist", "Geist Fallback";
+  --font-mono: "Geist Mono", "Geist Mono Fallback";
 }
 
 @media (prefers-color-scheme: dark) {
@@ -59,4 +63,13 @@ body {
 
 *::-webkit-scrollbar-thumb:hover {
   background-color: #5574ee;
+}
+
+@layer base {
+  * {
+    @apply border-gray-200;
+  }
+  body {
+    @apply bg-gray-50 text-gray-900;
+  }
 }

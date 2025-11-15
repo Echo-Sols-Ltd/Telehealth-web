@@ -54,8 +54,8 @@ export default function LoginPage() {
         }
       }
 
-      // Navigate to dashboard or home
-      router.push("/");
+      // Navigate to patient dashboard
+      router.push("/patient/dashboard");
     } catch (err) {
       setError("An error occurred. Please try again.");
       console.error("Login error:", err);
