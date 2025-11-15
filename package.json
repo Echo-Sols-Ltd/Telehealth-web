@@ -26,6 +26,7 @@
     "next": "16.0.1",
     "next-auth": "^4.24.13",
     "nodemailer": "^7.0.10",
+    "openai": "^6.9.0",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-hook-form": "^7.66.0",

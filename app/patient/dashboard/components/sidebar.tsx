@@ -10,8 +10,11 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 export function Sidebar() {
+  const pathname = usePathname();
+
   return (
     <aside className="hidden lg:flex w-96 bg-white flex-col h-screen fixed left-0 top-0 z-40 lg:relative lg:z-auto">
       <div className="p-6">
@@ -22,11 +25,39 @@ export function Sidebar() {
       </div>
 
       <nav className="flex-1 px-6 space-y-3 flex flex-col pt-16">
-        <NavItem icon={Home} label="Home" active />
-        <NavItem icon={Stethoscope} label="Health Metrics" />
-        <NavItem icon={Activity} label="AI Consultation" />
-        <NavItem icon={Calendar} label="Appointments" />
-        <NavItem icon={Settings} label="Settings" />
+        <NavItem
+          icon={Home}
+          label="Home"
+          href="/patient/dashboard"
+          active={
+            pathname === "/patient/dashboard" ||
+            pathname === "/patient/dashboard/Home"
+          }
+        />
+        <NavItem
+          icon={Stethoscope}
+          label="Health Metrics"
+          href="/patient/dashboard/health-metrics"
+          active={pathname === "/patient/dashboard/health-metrics"}
+        />
+        <NavItem
+          icon={Activity}
+          label="AI Consultation"
+          href="/patient/dashboard/ai-consultation"
+          active={pathname === "/patient/dashboard/ai-consultation"}
+        />
+        <NavItem
+          icon={Calendar}
+          label="Appointments"
+          href="/patient/dashboard/appointments"
+          active={pathname === "/patient/dashboard/appointments"}
+        />
+        <NavItem
+          icon={Settings}
+          label="Settings"
+          href="/patient/dashboard/settings"
+          active={pathname === "/patient/dashboard/settings"}
+        />
       </nav>
 
       <div className="p-4 flex flex-col">
@@ -63,21 +94,38 @@ export function Sidebar() {
 function NavItem({
   icon: Icon,
   label,
+  href,
   active,
 }: {
   icon: any;
   label: string;
+  href?: string;
   active?: boolean;
 }) {
+  const handleLogout = () => {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("currentUser");
+      window.location.href = "/login";
+    }
+  };
+
+  const className = `flex items-center gap-4 px-6 py-4 transition relative rounded-lg ${
+    active
+      ? "bg-[#E1E6F8] text-[#6685FF]"
+      : "text-[#00000069] hover:text-[#6685FF]"
+  }`;
+
+  if (label === "Log Out") {
+    return (
+      <button onClick={handleLogout} className={className}>
+        <Icon size={28} />
+        <span className="font-medium font-roboto-flex text-lg">{label}</span>
+      </button>
+    );
+  }
+
   return (
-    <Link
-      href="#"
-      className={`flex items-center gap-4 px-6 py-4 transition relative rounded-lg ${
-        active
-          ? "bg-[#E1E6F8] text-[#6685FF]"
-          : "text-[#00000069] hover:[#00000069]"
-      }`}
-    >
+    <Link href={href || "#"} className={className}>
       {/* LEFT HIGHLIGHT BAR FOR ACTIVE TAB */}
       {active && (
         <div className="absolute left-0 top-0 h-full w-2 bg-[#526ACC] rounded-r-full" />
