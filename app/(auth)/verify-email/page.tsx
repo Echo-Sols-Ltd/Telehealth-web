@@ -1,8 +1,6 @@
 "use client";
 
-export const dynamic = "force-dynamic";
-
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   emailVerificationReducer,
@@ -13,7 +11,7 @@ import {
   TELEHEALTH_SENDER_EMAIL,
 } from "@/services/mockEmailService";
 
-export default function EmailVerificationPage() {
+function EmailVerificationContent() {
   const searchParams = useSearchParams();
   const [state, dispatch] = useReducer(
     emailVerificationReducer,
@@ -21,6 +19,8 @@ export default function EmailVerificationPage() {
   );
   const [rotation, setRotation] = useState(0);
   const [isResending, setIsResending] = useState(false);
+  const [countdown, setCountdown] = useState(0);
+  const [emailSent, setEmailSent] = useState(false);
 
   const maskEmail = (email: string): string => {
     if (!email || !email.includes("@")) return email;
@@ -40,6 +40,7 @@ export default function EmailVerificationPage() {
 
     const email = emailFromParams || emailFromStorage || "";
     if (email) {
+      // Mask email for display
       const maskedEmail = maskEmail(email);
       dispatch({ type: "SET_EMAIL", payload: maskedEmail });
     }
@@ -53,6 +54,18 @@ export default function EmailVerificationPage() {
     return () => clearInterval(interval);
   }, []);
 
+  // Countdown timer
+  useEffect(() => {
+    if (countdown > 0) {
+      const timer = setTimeout(() => {
+        setCountdown((prev) => prev - 1);
+      }, 1000);
+      return () => clearTimeout(timer);
+    } else if (countdown === 0 && emailSent) {
+      setEmailSent(false);
+    }
+  }, [countdown, emailSent]);
+
   const icons = [
     { src: "/images/pill.png", angle: 0 },
     { src: "/images/pill1.png", angle: 45 },
@@ -65,22 +78,22 @@ export default function EmailVerificationPage() {
   const handleResendEmail = async () => {
     setIsResending(true);
 
+    // Get the original email (unmasked) from localStorage
     const originalEmail =
       typeof window !== "undefined"
         ? localStorage.getItem("pendingVerificationEmail")
         : null;
 
     if (originalEmail) {
+      // Resend verification email
       sendVerificationEmail(originalEmail);
       setTimeout(() => {
         setIsResending(false);
-        alert(
-          `Verification email has been resent from ${TELEHEALTH_SENDER_EMAIL}!`
-        );
+        setEmailSent(true);
+        setCountdown(60); // Start 60 second countdown
       }, 1000);
     } else {
       setIsResending(false);
-      alert("Unable to resend email. Please try signing up again.");
     }
   };
 
@@ -168,14 +181,46 @@ export default function EmailVerificationPage() {
         </p>
 
         {/* Resend Email Button */}
-        <button
-          onClick={handleResendEmail}
-          disabled={isResending}
-          className="w-full max-w-md px-6 sm:px-10 py-4 sm:py-5 rounded-[10px] font-bold text-white transition-all shadow-md hover:shadow-lg disabled:opacity-50 font-roboto-flex text-base sm:text-lg bg-[#6685FF]"
-        >
-          {isResending ? "Sending..." : "Resend Email"}
-        </button>
+        <div className="w-full max-w-md flex flex-col items-center">
+          <button
+            onClick={handleResendEmail}
+            disabled={isResending || countdown > 0}
+            className="w-full px-6 sm:px-10 py-4 sm:py-5 rounded-[10px] font-bold text-white transition-all shadow-md hover:shadow-lg disabled:opacity-50 font-roboto-flex text-base sm:text-lg bg-[#6685FF]"
+          >
+            {isResending
+              ? "Sending..."
+              : countdown > 0
+                ? `Resend Email (${countdown}s)`
+                : "Resend Email"}
+          </button>
+          {emailSent && countdown > 0 && (
+            <p className="mt-3 text-sm sm:text-base text-gray-600 font-roboto-flex">
+              Email sent! We can resend it in {countdown} second
+              {countdown !== 1 ? "s" : ""}
+            </p>
+          )}
+        </div>
       </div>
     </div>
+  );
+}
+
+export default function EmailVerificationPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-white flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-roboto-flex mb-4">
+              <span style={{ color: "#01061c" }}>Tele</span>
+              <span style={{ color: "#6685FF" }}>Health</span>
+            </h1>
+            <p className="text-gray-600 font-roboto-flex">Loading...</p>
+          </div>
+        </div>
+      }
+    >
+      <EmailVerificationContent />
+    </Suspense>
   );
 }
