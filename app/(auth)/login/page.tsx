@@ -128,6 +128,16 @@ export default function LoginPage() {
               <div className="text-red-500 text-sm text-center">{error}</div>
             )}
 
+            <div className="text-right mb-4">
+              <button
+                onClick={() => router.push("/forgot-password")}
+                className="text-sm sm:text-base font-roboto-flex hover:underline"
+                style={{ color: "#6685FF" }}
+              >
+                Forgot password?
+              </button>
+            </div>
+
             <button
               type="submit"
               disabled={isLoading}
