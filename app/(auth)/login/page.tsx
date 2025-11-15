@@ -100,7 +100,7 @@ export default function LoginPage() {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full px-5 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6685FF] font-roboto-flex font-light text-black/50"
+                className="w-full px-5 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6685FF] font-roboto-flex font-light text-black"
                 placeholder="Enter your email"
               />
             </div>
@@ -119,7 +119,7 @@ export default function LoginPage() {
                 value={formData.password}
                 onChange={handleChange}
                 required
-                className="w-full px-5 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6685FF] font-roboto-flex font-light text-black/50"
+                className="w-full px-5 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6685FF] font-roboto-flex font-light text-black"
                 placeholder="Enter your password"
               />
             </div>

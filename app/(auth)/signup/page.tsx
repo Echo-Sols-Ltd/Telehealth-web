@@ -197,7 +197,7 @@ export default function TeleHealthSignUp() {
                 name="fullName"
                 value={formData.fullName}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 rounded-lg border font-roboto-flex ${
+                className={`w-full px-4 py-3 rounded-lg border font-roboto-flex text-black ${
                   errors.fullName ? "border-red-500" : "border-gray-300"
                 } focus:outline-none focus:ring-2 focus:ring-[#6685FF]`}
               />
@@ -217,7 +217,7 @@ export default function TeleHealthSignUp() {
                 name="nationalId"
                 value={formData.nationalId}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 rounded-lg border font-roboto-flex ${
+                className={`w-full px-4 py-3 rounded-lg border font-roboto-flex text-black ${
                   errors.nationalId ? "border-red-500" : "border-gray-300"
                 } focus:outline-none focus:ring-2 focus:ring-[#6685FF]`}
               />
@@ -237,7 +237,7 @@ export default function TeleHealthSignUp() {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 rounded-lg border font-roboto-flex ${
+                className={`w-full px-4 py-3 rounded-lg border font-roboto-flex text-black ${
                   errors.email ? "border-red-500" : "border-gray-300"
                 } focus:outline-none focus:ring-2 focus:ring-[#6685FF]`}
               />
@@ -258,7 +258,7 @@ export default function TeleHealthSignUp() {
                 value={formData.medicalCode}
                 onChange={handleChange}
                 disabled={formData.role === "patient"}
-                className={`w-full px-4 py-3 rounded-lg border font-roboto-flex ${
+                className={`w-full px-4 py-3 rounded-lg border font-roboto-flex text-black ${
                   errors.medicalCode ? "border-red-500" : "border-gray-300"
                 } focus:outline-none focus:ring-2 focus:ring-[#6685FF] ${
                   formData.role === "patient" ? "bg-gray-100" : ""
@@ -280,7 +280,7 @@ export default function TeleHealthSignUp() {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 rounded-lg border font-roboto-flex ${
+                className={`w-full px-4 py-3 rounded-lg border font-roboto-flex text-black ${
                   errors.password ? "border-red-500" : "border-gray-300"
                 } focus:outline-none focus:ring-2 focus:ring-[#6685FF]`}
               />
@@ -300,7 +300,7 @@ export default function TeleHealthSignUp() {
                 name="phoneNumber"
                 value={formData.phoneNumber}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 rounded-lg border font-roboto-flex ${
+                className={`w-full px-4 py-3 rounded-lg border font-roboto-flex text-black ${
                   errors.phoneNumber ? "border-red-500" : "border-gray-300"
                 } focus:outline-none focus:ring-2 focus:ring-[#6685FF]`}
               />
@@ -321,7 +321,7 @@ export default function TeleHealthSignUp() {
               name="repeatPassword"
               value={formData.repeatPassword}
               onChange={handleChange}
-              className={`w-full px-4 py-3 rounded-lg border font-roboto-flex ${
+              className={`w-full px-4 py-3 rounded-lg border font-roboto-flex text-black ${
                 errors.repeatPassword ? "border-red-500" : "border-gray-300"
               } focus:outline-none focus:ring-2 focus:ring-[#6685FF]`}
             />
