@@ -158,12 +158,15 @@ export default function Dashboard() {
   const [appointmentFilter, setAppointmentFilter] = useState("week");
   const [appointmentsList, setAppointmentsList] = useState(appointments);
   const [userInitials, setUserInitials] = useState("JD");
+  const [userProfileImage, setUserProfileImage] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Get user initials from localStorage
+  // Get user initials and profile image from localStorage
   useEffect(() => {
     if (typeof window !== "undefined") {
       const currentUserStr = localStorage.getItem("currentUser");
+      const savedProfileImage = localStorage.getItem("userProfileImage");
+      
       if (currentUserStr) {
         try {
           const currentUser: UserData = JSON.parse(currentUserStr);
@@ -184,6 +187,20 @@ export default function Dashboard() {
           console.error("Error parsing user data:", error);
         }
       }
+
+      if (savedProfileImage) {
+        setUserProfileImage(savedProfileImage);
+      }
+
+      // Listen for profile image updates
+      const handleProfileImageUpdate = (e: CustomEvent) => {
+        setUserProfileImage(e.detail);
+      };
+      window.addEventListener("profileImageUpdated", handleProfileImageUpdate as EventListener);
+      
+      return () => {
+        window.removeEventListener("profileImageUpdated", handleProfileImageUpdate as EventListener);
+      };
     }
   }, []);
 
@@ -242,7 +259,10 @@ export default function Dashboard() {
                 className="h-10 w-10 sm:h-12 sm:w-12"
               >
                 <Avatar className="h-9 w-9 sm:h-11 sm:w-11">
-                  <AvatarFallback className="font-roboto text-sm sm:text-base">
+                  {userProfileImage ? (
+                    <AvatarImage src={userProfileImage} alt="Profile" />
+                  ) : null}
+                  <AvatarFallback className="font-roboto text-sm sm:text-base bg-[#6685FF] text-white">
                     {userInitials}
                   </AvatarFallback>
                 </Avatar>

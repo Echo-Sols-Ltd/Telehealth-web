@@ -17,6 +17,7 @@ interface Message {
 
 export default function AIConsultation() {
   const [userInitials, setUserInitials] = useState("JD");
+  const [userProfileImage, setUserProfileImage] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -24,10 +25,12 @@ export default function AIConsultation() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Get user initials from localStorage
+  // Get user initials and profile image from localStorage
   useEffect(() => {
     if (typeof window !== "undefined") {
       const currentUserStr = localStorage.getItem("currentUser");
+      const savedProfileImage = localStorage.getItem("userProfileImage");
+
       if (currentUserStr) {
         try {
           const currentUser: UserData = JSON.parse(currentUserStr);
@@ -48,6 +51,26 @@ export default function AIConsultation() {
           console.error("Error parsing user data:", error);
         }
       }
+
+      if (savedProfileImage) {
+        setUserProfileImage(savedProfileImage);
+      }
+
+      // Listen for profile image updates
+      const handleProfileImageUpdate = (e: CustomEvent) => {
+        setUserProfileImage(e.detail);
+      };
+      window.addEventListener(
+        "profileImageUpdated",
+        handleProfileImageUpdate as EventListener
+      );
+
+      return () => {
+        window.removeEventListener(
+          "profileImageUpdated",
+          handleProfileImageUpdate as EventListener
+        );
+      };
     }
   }, []);
 
@@ -194,6 +217,20 @@ export default function AIConsultation() {
               >
                 <MoreVertical className="h-5 w-5 sm:h-6 sm:w-6" />
               </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-10 w-10 sm:h-12 sm:w-12"
+              >
+                <Avatar className="h-9 w-9 sm:h-11 sm:w-11">
+                  {userProfileImage ? (
+                    <AvatarImage src={userProfileImage} alt="Profile" />
+                  ) : null}
+                  <AvatarFallback className="font-roboto text-sm sm:text-base bg-[#6685FF] text-white">
+                    {userInitials}
+                  </AvatarFallback>
+                </Avatar>
+              </Button>
             </div>
           </div>
         </div>
@@ -265,7 +302,10 @@ export default function AIConsultation() {
                   {/* User Avatar (right side) */}
                   {message.sender === "user" && (
                     <Avatar className="h-8 w-8 sm:h-10 sm:w-10 shrink-0">
-                      <AvatarFallback className="font-roboto text-sm sm:text-base bg-blue-100 text-blue-700">
+                      {userProfileImage ? (
+                        <AvatarImage src={userProfileImage} alt="Profile" />
+                      ) : null}
+                      <AvatarFallback className="font-roboto text-sm sm:text-base bg-[#6685FF] text-white">
                         {userInitials}
                       </AvatarFallback>
                     </Avatar>

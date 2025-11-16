@@ -175,3 +175,191 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Animated Curvy Lines for Payment Page */
+@keyframes draw-line-1 {
+  0% {
+    stroke-dasharray: 0, 2000;
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  5% {
+    opacity: 0.4;
+  }
+  20% {
+    opacity: 0.4;
+  }
+  100% {
+    stroke-dasharray: 2000, 0;
+    stroke-dashoffset: 0;
+    opacity: 0.4;
+  }
+}
+
+@keyframes draw-line-2 {
+  0% {
+    stroke-dasharray: 0, 2000;
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  20% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.4;
+  }
+  40% {
+    opacity: 0.4;
+  }
+  100% {
+    stroke-dasharray: 2000, 0;
+    stroke-dashoffset: 0;
+    opacity: 0.4;
+  }
+}
+
+@keyframes draw-line-3 {
+  0% {
+    stroke-dasharray: 0, 2000;
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  40% {
+    opacity: 0;
+  }
+  45% {
+    opacity: 0.4;
+  }
+  60% {
+    opacity: 0.4;
+  }
+  100% {
+    stroke-dasharray: 2000, 0;
+    stroke-dashoffset: 0;
+    opacity: 0.4;
+  }
+}
+
+@keyframes draw-line-4 {
+  0% {
+    stroke-dasharray: 0, 2000;
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  60% {
+    opacity: 0;
+  }
+  65% {
+    opacity: 0.4;
+  }
+  80% {
+    opacity: 0.4;
+  }
+  100% {
+    stroke-dasharray: 2000, 0;
+    stroke-dashoffset: 0;
+    opacity: 0.4;
+  }
+}
+
+@keyframes draw-line-5 {
+  0% {
+    stroke-dasharray: 0, 2000;
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  80% {
+    opacity: 0;
+  }
+  85% {
+    opacity: 0.4;
+  }
+  100% {
+    stroke-dasharray: 2000, 0;
+    stroke-dashoffset: 0;
+    opacity: 0.4;
+  }
+}
+
+.animate-draw-line-1 {
+  animation: draw-line-1 4s ease-in-out forwards;
+}
+
+.animate-draw-line-2 {
+  animation: draw-line-2 4s ease-in-out forwards;
+}
+
+.animate-draw-line-3 {
+  animation: draw-line-3 4s ease-in-out forwards;
+}
+
+.animate-draw-line-4 {
+  animation: draw-line-4 4s ease-in-out forwards;
+}
+
+.animate-draw-line-5 {
+  animation: draw-line-5 4s ease-in-out forwards;
+}
+
+/* Smooth fade and slide animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-from-bottom {
+  from {
+    transform: translateY(1rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-from-right {
+  from {
+    transform: translateX(1rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-from-top {
+  from {
+    transform: translateY(-1rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-in {
+  animation-fill-mode: both;
+}
+
+.fade-in {
+  animation: fade-in 0.5s ease-out;
+}
+
+.slide-in-from-bottom-4 {
+  animation: slide-in-from-bottom 0.5s ease-out;
+}
+
+.slide-in-from-right {
+  animation: slide-in-from-right 0.5s ease-out;
+}
+
+.slide-in-from-top {
+  animation: slide-in-from-top 0.3s ease-out;
+}
