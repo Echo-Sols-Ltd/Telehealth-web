@@ -7,87 +7,131 @@ import {
   Calendar,
   Settings,
   LogOut,
+  X,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
-export function Sidebar() {
+interface SidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden lg:flex w-96 bg-white flex-col h-screen fixed left-0 top-0 z-40 lg:relative lg:z-auto">
-      <div className="p-6">
-        <h1 className="text-3xl font-bold font-roboto-flex">
-          <span className="text-[#020d36]">Tele</span>
-          <span style={{ color: "#6685FF" }}>Health</span>
-        </h1>
-      </div>
+    <>
+      {/* Mobile overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={onClose}
+        />
+      )}
 
-      <nav className="flex-1 px-6 space-y-3 flex flex-col pt-16">
-        <NavItem
-          icon={Home}
-          label="Home"
-          href="/patient/dashboard"
-          active={
-            pathname === "/patient/dashboard" ||
-            pathname === "/patient/dashboard/Home"
-          }
-        />
-        <NavItem
-          icon={Stethoscope}
-          label="Health Metrics"
-          href="/patient/dashboard/health-metrics"
-          active={pathname === "/patient/dashboard/health-metrics"}
-        />
-        <NavItem
-          icon={Activity}
-          label="AI Consultation"
-          href="/patient/dashboard/ai-consultation"
-          active={pathname === "/patient/dashboard/ai-consultation"}
-        />
-        <NavItem
-          icon={Calendar}
-          label="Appointments"
-          href="/patient/dashboard/appointments"
-          active={pathname === "/patient/dashboard/appointments"}
-        />
-        <NavItem
-          icon={Settings}
-          label="Settings"
-          href="/patient/dashboard/settings"
-          active={pathname === "/patient/dashboard/settings"}
-        />
-      </nav>
-
-      <div className="p-4 flex flex-col">
-        <div className="bg-linear-to-br from-blue-100 to-purple-100 rounded-lg p-5 mb-4 text-center relative overflow-hidden flex flex-col items-center gap-4">
-          <div className="relative z-10 w-full flex justify-center">
-            <Image
-              src="/images/upgrade.png"
-              alt="Upgrade illustration"
-              width={140}
-              height={140}
-              className="object-contain w-32 h-32"
-            />
-          </div>
-          <div className="relative z-10">
-            <p className="text-base text-gray-700 font-medium font-roboto-flex">
-              Upgrade to our new version Telehealth-Plus
-            </p>
-          </div>
+      {/* Sidebar */}
+      <aside
+        className={`
+          fixed lg:relative
+          w-96 bg-white flex-col h-screen
+          left-0 top-0 z-50 lg:z-auto
+          transform transition-transform duration-300 ease-in-out
+          ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+          flex overflow-hidden
+        `}
+      >
+        {/* Mobile close button */}
+        <div className="lg:hidden flex justify-end p-4">
           <button
-            className="relative z-10 w-full text-white py-3 rounded-lg text-base font-semibold hover:opacity-90 transition font-roboto-flex"
-            style={{ backgroundColor: "#6685FF" }}
+            onClick={onClose}
+            className="p-2 rounded-lg hover:bg-gray-100 transition"
           >
-            Upgrade
+            <X size={24} />
           </button>
         </div>
-        <div className="px-6 font-roboto-flex">
-          <NavItem icon={LogOut} label="Log Out" />
+
+        {/* Logo */}
+        <div className="p-6">
+          <h1 className="text-3xl font-bold font-roboto-flex">
+            <span className="text-[#020d36]">Tele</span>
+            <span style={{ color: "#6685FF" }}>Health</span>
+          </h1>
         </div>
-      </div>
-    </aside>
+
+        {/* Navigation - flex-1 to take available space */}
+        <nav className="flex-1 px-6 space-y-3 flex flex-col pt-16 overflow-hidden">
+          <NavItem
+            icon={Home}
+            label="Home"
+            href="/patient/dashboard"
+            active={
+              pathname === "/patient/dashboard" ||
+              pathname === "/patient/dashboard/Home"
+            }
+            onClick={onClose}
+          />
+          <NavItem
+            icon={Stethoscope}
+            label="Health Metrics"
+            href="/patient/dashboard/health-metrics"
+            active={pathname === "/patient/dashboard/health-metrics"}
+            onClick={onClose}
+          />
+          <NavItem
+            icon={Activity}
+            label="AI Consultation"
+            href="/patient/dashboard/ai-consultation"
+            active={pathname === "/patient/dashboard/ai-consultation"}
+            onClick={onClose}
+          />
+          <NavItem
+            icon={Calendar}
+            label="Appointments"
+            href="/patient/dashboard/appointments"
+            active={pathname === "/patient/dashboard/appointments"}
+            onClick={onClose}
+          />
+          <NavItem
+            icon={Settings}
+            label="Settings"
+            href="/patient/dashboard/settings"
+            active={pathname === "/patient/dashboard/settings"}
+            onClick={onClose}
+          />
+        </nav>
+
+        {/* Upgrade and Logout - always at bottom */}
+        <div className="p-4 flex flex-col mt-auto">
+          <div className="bg-linear-to-br from-blue-100 to-purple-100 rounded-lg p-5 mb-4 text-center relative overflow-hidden flex flex-col items-center gap-4">
+            <div className="relative z-10 w-full flex justify-center">
+              <Image
+                src="/images/upgrade.png"
+                alt="Upgrade illustration"
+                width={140}
+                height={140}
+                className="object-contain w-32 h-32"
+              />
+            </div>
+            <div className="relative z-10">
+              <p className="text-base text-gray-700 font-medium font-roboto-flex">
+                Upgrade to our new version Telehealth-Plus
+              </p>
+            </div>
+            <button
+              className="relative z-10 w-full text-white py-3 rounded-lg text-base font-semibold hover:opacity-90 transition font-roboto-flex"
+              style={{ backgroundColor: "#6685FF" }}
+            >
+              Upgrade
+            </button>
+          </div>
+          <div className="px-6 font-roboto-flex">
+            <NavItem icon={LogOut} label="Log Out" onClick={onClose} />
+          </div>
+        </div>
+      </aside>
+    </>
   );
 }
 
@@ -96,11 +140,13 @@ function NavItem({
   label,
   href,
   active,
+  onClick,
 }: {
   icon: any;
   label: string;
   href?: string;
   active?: boolean;
+  onClick?: () => void;
 }) {
   const handleLogout = () => {
     if (typeof window !== "undefined") {
@@ -117,7 +163,13 @@ function NavItem({
 
   if (label === "Log Out") {
     return (
-      <button onClick={handleLogout} className={className}>
+      <button
+        onClick={() => {
+          handleLogout();
+          onClick?.();
+        }}
+        className={className}
+      >
         <Icon size={28} />
         <span className="font-medium font-roboto-flex text-lg">{label}</span>
       </button>
@@ -125,7 +177,7 @@ function NavItem({
   }
 
   return (
-    <Link href={href || "#"} className={className}>
+    <Link href={href || "#"} onClick={onClick} className={className}>
       {/* LEFT HIGHLIGHT BAR FOR ACTIVE TAB */}
       {active && (
         <div className="absolute left-0 top-0 h-full w-2 bg-[#526ACC] rounded-r-full" />

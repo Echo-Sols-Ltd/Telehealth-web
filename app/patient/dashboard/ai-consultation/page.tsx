@@ -1,12 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import {
-  Plus,
-  Mic,
-  MoreVertical,
-  Send,
-} from "lucide-react";
+import { Plus, Mic, MoreVertical, Send, Menu } from "lucide-react";
 import type { UserData } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,6 +20,7 @@ export default function AIConsultation() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -62,7 +58,7 @@ export default function AIConsultation() {
 
   const handleSendMessage = async (e?: React.FormEvent) => {
     e?.preventDefault();
-    
+
     if (!inputMessage.trim() || isLoading) return;
 
     const userMessage: Message = {
@@ -104,9 +100,10 @@ export default function AIConsultation() {
       console.error("Error sending message:", error);
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: error.message?.includes("quota") || error.message?.includes("billing")
-          ? "I'm currently using a fallback response system. For the best experience, please configure your OpenAI API key. However, I can still provide general health information based on your questions."
-          : "I'm sorry, I encountered an error. Please try again or contact support if the problem persists.",
+        text:
+          error.message?.includes("quota") || error.message?.includes("billing")
+            ? "I'm currently using a fallback response system. For the best experience, please configure your OpenAI API key. However, I can still provide general health information based on your questions."
+            : "I'm sorry, I encountered an error. Please try again or contact support if the problem persists.",
         sender: "ai",
         timestamp: new Date(),
       };
@@ -159,19 +156,30 @@ export default function AIConsultation() {
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
-      <Sidebar />
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       {/* Main content */}
-      <main className="flex-1 flex flex-col bg-background w-full">
+      <main className="flex-1 flex flex-col bg-background w-full overflow-hidden">
         {/* Header */}
-        <div className="sticky top-0 z-40 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 border-b">
+        <div className="sticky top-0 z-30 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 border-b">
           <div className="flex h-14 sm:h-16 items-center justify-between px-4 sm:px-6 gap-4">
-            <h1 className="text-2xl sm:text-3xl font-bold font-roboto text-gray-900">
-              AI Chat
-            </h1>
+            <div className="flex items-center gap-4">
+              {/* Hamburger menu for mobile */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="lg:hidden h-10 w-10"
+                onClick={() => setSidebarOpen(true)}
+              >
+                <Menu className="h-5 w-5" />
+              </Button>
+              <h1 className="text-2xl sm:text-3xl font-bold font-roboto text-gray-900">
+                AI Chat
+              </h1>
+            </div>
             <div className="flex items-center gap-2 sm:gap-4">
               <div className="flex items-center gap-2">
                 <Avatar className="h-8 w-8 sm:h-10 sm:w-10">
-                  <AvatarFallback className="bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 text-white font-roboto text-sm sm:text-base">
+                  <AvatarFallback className="bg-linear-to-br from-blue-400 via-purple-400 to-pink-400 text-white font-roboto text-sm sm:text-base">
                     TH
                   </AvatarFallback>
                 </Avatar>
@@ -209,8 +217,9 @@ export default function AIConsultation() {
                   Welcome to AI Consultation
                 </h2>
                 <p className="text-sm sm:text-base font-roboto text-gray-500 max-w-md">
-                  Ask me anything about your health, wellness, or medical questions. 
-                  I'm here to provide general guidance and information.
+                  Ask me anything about your health, wellness, or medical
+                  questions. I'm here to provide general guidance and
+                  information.
                 </p>
               </div>
             </div>
@@ -226,7 +235,7 @@ export default function AIConsultation() {
                   {/* AI Avatar (left side) */}
                   {message.sender === "ai" && (
                     <Avatar className="h-8 w-8 sm:h-10 sm:w-10 shrink-0">
-                      <AvatarFallback className="bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 text-white font-roboto text-sm sm:text-base">
+                      <AvatarFallback className="bg-linear-to-br from-blue-400 via-purple-400 to-pink-400 text-white font-roboto text-sm sm:text-base">
                         TH
                       </AvatarFallback>
                     </Avatar>
@@ -242,14 +251,14 @@ export default function AIConsultation() {
                   >
                     <div
                       className={`text-sm sm:text-base font-roboto whitespace-pre-wrap ${
-                        message.sender === "user" ? "text-white" : "text-gray-900"
+                        message.sender === "user"
+                          ? "text-white"
+                          : "text-gray-900"
                       }`}
                     >
-                      {message.sender === "ai" ? (
-                        formatMessage(message.text)
-                      ) : (
-                        message.text
-                      )}
+                      {message.sender === "ai"
+                        ? formatMessage(message.text)
+                        : message.text}
                     </div>
                   </div>
 
@@ -268,15 +277,24 @@ export default function AIConsultation() {
               {isLoading && (
                 <div className="flex items-start gap-3 sm:gap-4 justify-start">
                   <Avatar className="h-8 w-8 sm:h-10 sm:w-10 shrink-0">
-                    <AvatarFallback className="bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 text-white font-roboto text-sm sm:text-base">
+                    <AvatarFallback className="bg-linear-to-br from-blue-400 via-purple-400 to-pink-400 text-white font-roboto text-sm sm:text-base">
                       TH
                     </AvatarFallback>
                   </Avatar>
                   <div className="bg-white border border-gray-200 rounded-2xl px-4 sm:px-6 py-3 sm:py-4">
                     <div className="flex gap-2">
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }}></div>
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }}></div>
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }}></div>
+                      <div
+                        className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                        style={{ animationDelay: "0ms" }}
+                      ></div>
+                      <div
+                        className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                        style={{ animationDelay: "150ms" }}
+                      ></div>
+                      <div
+                        className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                        style={{ animationDelay: "300ms" }}
+                      ></div>
                     </div>
                   </div>
                 </div>
@@ -289,7 +307,10 @@ export default function AIConsultation() {
 
         {/* Input Bar */}
         <div className="sticky bottom-0 bg-background border-t p-4">
-          <form onSubmit={handleSendMessage} className="flex items-center gap-2 sm:gap-4">
+          <form
+            onSubmit={handleSendMessage}
+            className="flex items-center gap-2 sm:gap-4"
+          >
             <Button
               type="button"
               variant="ghost"
@@ -328,4 +349,3 @@ export default function AIConsultation() {
     </div>
   );
 }
-

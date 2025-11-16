@@ -6,6 +6,7 @@ import {
   Bell,
   MoreVertical,
   ChevronDown,
+  Menu,
 } from "lucide-react";
 import type { UserData } from "@/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -93,6 +94,7 @@ const progressMetrics = [
 export default function HealthMetrics() {
   const [userInitials, setUserInitials] = useState("JD");
   const [timeFilter, setTimeFilter] = useState("6months");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Get user initials from localStorage
   useEffect(() => {
@@ -123,19 +125,30 @@ export default function HealthMetrics() {
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
-      <Sidebar />
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       {/* Main content */}
       <main className="flex-1 overflow-auto bg-background w-full">
         {/* Header */}
-        <div className="sticky top-0 z-40 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
+        <div className="sticky top-0 z-30 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
           <div className="flex h-14 sm:h-16 items-center justify-between px-4 sm:px-6 gap-4">
-            <div className="flex-1 max-w-xs sm:max-w-md">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 h-5 w-5 sm:h-6 sm:w-6 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  placeholder="Search.."
-                  className="pl-12 sm:pl-14 bg-blue-100 border-0 text-foreground placeholder:text-muted-foreground text-base sm:text-lg font-roboto h-10 sm:h-12"
-                />
+            <div className="flex items-center gap-4 flex-1">
+              {/* Hamburger menu for mobile */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="lg:hidden h-10 w-10"
+                onClick={() => setSidebarOpen(true)}
+              >
+                <Menu className="h-5 w-5" />
+              </Button>
+              <div className="flex-1 max-w-xs sm:max-w-md">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 h-5 w-5 sm:h-6 sm:w-6 -translate-y-1/2 text-muted-foreground" />
+                  <Input
+                    placeholder="Search.."
+                    className="pl-12 sm:pl-14 bg-blue-100 border-0 text-foreground placeholder:text-muted-foreground text-base sm:text-lg font-roboto h-10 sm:h-12"
+                  />
+                </div>
               </div>
             </div>
             <div className="flex items-center gap-2 sm:gap-4">
