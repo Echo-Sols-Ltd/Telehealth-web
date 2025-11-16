@@ -245,7 +245,7 @@ export default function AIConsultation() {
                   <div
                     className={`max-w-[80%] sm:max-w-[70%] rounded-2xl px-4 sm:px-6 py-3 sm:py-4 ${
                       message.sender === "user"
-                        ? "bg-blue-500 text-white"
+                        ? "bg-[#6685FF] text-white"
                         : "bg-white text-gray-900 border border-gray-200"
                     }`}
                   >
