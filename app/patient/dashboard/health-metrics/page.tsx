@@ -143,8 +143,8 @@ export default function HealthMetrics() {
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      {/* Main content */}
-      <main className="flex-1 overflow-auto bg-background w-full">
+      {/* Main content - Add left margin on desktop to account for fixed sidebar */}
+      <main className="flex-1 overflow-auto bg-background w-full lg:ml-96">
         {/* Header */}
         <div className="sticky top-0 z-30 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
           <div className="flex h-14 sm:h-16 items-center justify-between px-4 sm:px-6 gap-4">

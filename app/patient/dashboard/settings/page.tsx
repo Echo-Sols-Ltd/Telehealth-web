@@ -527,7 +527,7 @@ export default function Settings() {
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <main className="flex-1 overflow-auto bg-background w-full">
+      <main className="flex-1 overflow-auto bg-background w-full lg:ml-96">
         {/* Header */}
         <div className="sticky top-0 z-30 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 border-b">
           <div className="flex h-14 sm:h-16 items-center justify-between px-4 sm:px-6 gap-4">

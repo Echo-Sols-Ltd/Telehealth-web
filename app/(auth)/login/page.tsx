@@ -4,6 +4,7 @@ import { useState, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import LoadingScreenContent from "../../components/LoadingScreenContent";
 import { mockStorage } from "../../../types/mockData";
+import type { UserData } from "@/types";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -47,15 +48,22 @@ export default function LoginPage() {
       // Get user data
       const userDataStr = mockStorage.get(`user:${formData.email}`);
       if (userDataStr) {
-        const userData = JSON.parse(userDataStr);
+        const userData: UserData = JSON.parse(userDataStr);
         // Store current user in session (you can use localStorage or context)
         if (typeof window !== "undefined") {
           localStorage.setItem("currentUser", JSON.stringify(userData));
         }
-      }
 
-      // Navigate to patient dashboard
-      router.push("/patient/dashboard");
+        // Navigate based on user role
+        if (userData.role === "doctor") {
+          router.push("/doctor/dashboard");
+        } else {
+          router.push("/patient/dashboard");
+        }
+      } else {
+        // Fallback to patient dashboard if user data not found
+        router.push("/patient/dashboard");
+      }
     } catch (err) {
       setError("An error occurred. Please try again.");
       console.error("Login error:", err);

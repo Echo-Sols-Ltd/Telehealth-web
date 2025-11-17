@@ -2,9 +2,9 @@
 
 import {
   Home,
-  Stethoscope,
-  Activity,
+  Users,
   Watch,
+  MessageCircle,
   Settings,
   LogOut,
   X,
@@ -65,32 +65,32 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
           <NavItem
             icon={Home}
             label="Home"
-            href="/patient/dashboard"
+            href="/doctor/dashboard"
             active={
-              pathname === "/patient/dashboard" ||
-              pathname === "/patient/dashboard/Home"
+              pathname === "/doctor/dashboard" ||
+              pathname === "/doctor/dashboard/Home"
             }
             onClick={onClose}
           />
           <NavItem
-            icon={Stethoscope}
-            label="Health Metrics"
-            href="/patient/dashboard/health-metrics"
-            active={pathname === "/patient/dashboard/health-metrics"}
-            onClick={onClose}
-          />
-          <NavItem
-            icon={Activity}
-            label="AI Consultation"
-            href="/patient/dashboard/ai-consultation"
-            active={pathname === "/patient/dashboard/ai-consultation"}
+            icon={Users}
+            label="Patients"
+            href="/doctor/dashboard/patients"
+            active={pathname === "/doctor/dashboard/patients"}
             onClick={onClose}
           />
           <NavItem
             icon={Watch}
             label="Appointments"
-            href="/patient/dashboard/appointments"
-            active={pathname === "/patient/dashboard/appointments"}
+            href="/doctor/dashboard/appointments"
+            active={pathname === "/doctor/dashboard/appointments"}
+            onClick={onClose}
+          />
+          <NavItem
+            icon={MessageCircle}
+            label="Chat"
+            href="/doctor/dashboard/chat"
+            active={pathname === "/doctor/dashboard/chat"}
             onClick={onClose}
           />
           <NavItem
