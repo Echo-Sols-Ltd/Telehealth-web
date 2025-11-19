@@ -210,7 +210,7 @@ export default function AppointmentsPage() {
             </div>
           </div>
 
-          <Card className="rounded-[32px] border-none shadow-xl bg-white">
+          <Card className="rounded-4xl border-none shadow-xl bg-white">
             <CardHeader className="pb-0">
               <CardTitle className="sr-only">Appointments List</CardTitle>
             </CardHeader>

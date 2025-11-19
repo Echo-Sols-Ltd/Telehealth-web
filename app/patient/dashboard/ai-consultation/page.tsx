@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Plus, Mic, MoreVertical, Send, Menu } from "lucide-react";
+import { Plus, Mic, Ellipsis, Send, Menu } from "lucide-react";
 import type { UserData } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sidebar } from "../components/sidebar";
+import Image from "next/image";
 
 interface Message {
   id: string;
@@ -195,27 +196,28 @@ export default function AIConsultation() {
               >
                 <Menu className="h-5 w-5" />
               </Button>
-              <h1 className="text-2xl sm:text-3xl font-bold font-roboto text-gray-900">
+              <h1 className="text-2xl sm:text-3xl font-bold font-roboto text-[#000000]">
                 AI Chat
               </h1>
             </div>
             <div className="flex items-center gap-2 sm:gap-4">
-              <div className="flex items-center gap-2">
-                <Avatar className="h-8 w-8 sm:h-10 sm:w-10">
-                  <AvatarFallback className="bg-linear-to-br from-blue-400 via-purple-400 to-pink-400 text-white font-roboto text-sm sm:text-base">
-                    TH
-                  </AvatarFallback>
-                </Avatar>
-                <span className="text-sm sm:text-base font-roboto text-gray-700 hidden sm:inline">
+              <div className="flex items-center gap-2 bg-[#E4E4E4] rounded-4xl px-8 py-2">
+                <Image
+                  src="/images/logo.png"
+                  alt="Telehealth"
+                  width={30}
+                  height={30}
+                />
+                <span className="text-sm sm:text-base font-roboto text-[#000000] hidden sm:inline">
                   Telehealth
                 </span>
               </div>
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-10 w-10 sm:h-12 sm:w-12"
+                className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-[#D9D9D9] hover:bg-[#D9D9D9]/80"
               >
-                <MoreVertical className="h-5 w-5 sm:h-6 sm:w-6" />
+                <Ellipsis className="h-5 w-5 sm:h-6 sm:w-6 text-[#000000] hover:text-[#000000]/80 " />
               </Button>
               <Button
                 variant="ghost"
@@ -236,7 +238,7 @@ export default function AIConsultation() {
         </div>
 
         {/* Chat Messages Area */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 bg-[#9EB1FE1C]">
           {/* Today Label */}
           {messages.length > 0 && (
             <div className="text-center">
@@ -250,10 +252,10 @@ export default function AIConsultation() {
           {messages.length === 0 ? (
             <div className="flex items-center justify-center h-full">
               <div className="text-center space-y-4">
-                <h2 className="text-xl sm:text-2xl font-roboto font-semibold text-gray-700">
+                <h2 className="text-xl sm:text-2xl font-roboto font-semibold text-black">
                   Welcome to AI Consultation
                 </h2>
-                <p className="text-sm sm:text-base font-roboto text-gray-500 max-w-md">
+                <p className="text-sm sm:text-base font-roboto text-black max-w-md">
                   Ask me anything about your health, wellness, or medical
                   questions. I'm here to provide general guidance and
                   information.
@@ -355,7 +357,7 @@ export default function AIConsultation() {
               type="button"
               variant="ghost"
               size="icon"
-              className="h-10 w-10 sm:h-12 sm:w-12 shrink-0"
+              className="h-10 w-10 sm:h-12 sm:w-12 shrink-0 bg-[#344482] rounded-4xl hover:bg-[#344482]/80"
             >
               <Plus className="h-5 w-5 sm:h-6 sm:w-6" />
             </Button>
@@ -364,14 +366,14 @@ export default function AIConsultation() {
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               placeholder="Ask me anything..."
-              className="flex-1 bg-blue-50 border-0 text-base sm:text-lg font-roboto h-12 sm:h-14 rounded-full px-4 sm:px-6"
+              className="flex-1 bg-[#9EABE2] border-0 text-base sm:text-lg font-roboto h-12 sm:h-14 rounded-full px-4 sm:px-6 text-[#FFFFFF]"
               disabled={isLoading}
             />
             <Button
               type="button"
               variant="ghost"
               size="icon"
-              className="h-10 w-10 sm:h-12 sm:w-12 shrink-0"
+              className="h-10 w-10 sm:h-12 sm:w-12 shrink-0 bg-[#526ACC] rounded-4xl hover:bg-[#526ACC]/80"
             >
               <Mic className="h-5 w-5 sm:h-6 sm:w-6" />
             </Button>

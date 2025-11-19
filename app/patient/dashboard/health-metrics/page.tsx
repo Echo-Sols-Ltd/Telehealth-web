@@ -1,13 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  Search,
-  Bell,
-  MoreVertical,
-  ChevronDown,
-  Menu,
-} from "lucide-react";
+import { Search, Bell, Ellipsis, ChevronDown, Menu } from "lucide-react";
 import type { UserData } from "@/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -51,9 +45,9 @@ const progressMetrics = [
     progress: 69,
     description: "Highly Stable-69% Progress",
     colors: [
-      { value: 40, color: "#3B82F6" }, // Blue
-      { value: 25, color: "#EF4444" }, // Red
-      { value: 35, color: "#FCD34D" }, // Yellow
+      { value: 40, color: "#6685FF" }, // Blue
+      { value: 25, color: "#455A64" }, // Red
+      { value: 35, color: "#FBBC05AB" }, // Yellow
     ],
   },
   {
@@ -62,9 +56,9 @@ const progressMetrics = [
     progress: 30,
     description: "Mild Stability-30% Progress",
     colors: [
-      { value: 20, color: "#3B82F6" }, // Blue
-      { value: 10, color: "#EF4444" }, // Red
-      { value: 70, color: "#FCD34D" }, // Yellow
+      { value: 20, color: "#6685FF" }, // Blue
+      { value: 10, color: "#455A64" }, // Red
+      { value: 70, color: "#FBBC05AB" }, // Yellow
     ],
   },
   {
@@ -73,9 +67,9 @@ const progressMetrics = [
     progress: 15,
     description: "Critical-15% Progress",
     colors: [
-      { value: 5, color: "#3B82F6" }, // Blue
-      { value: 80, color: "#EF4444" }, // Red
-      { value: 15, color: "#FCD34D" }, // Yellow
+      { value: 5, color: "#6685FF" }, // Blue
+      { value: 80, color: "#455A64" }, // Red
+      { value: 15, color: "#FBBC05AB" }, // Yellow
     ],
   },
   {
@@ -84,9 +78,9 @@ const progressMetrics = [
     progress: 45,
     description: "Slightly Stable-45% Progress",
     colors: [
-      { value: 30, color: "#3B82F6" }, // Blue
-      { value: 25, color: "#EF4444" }, // Red
-      { value: 45, color: "#FCD34D" }, // Yellow
+      { value: 30, color: "#6685FF" }, // Blue
+      { value: 25, color: "#455A64" }, // Red
+      { value: 45, color: "#FBBC05AB" }, // Yellow
     ],
   },
 ];
@@ -102,7 +96,7 @@ export default function HealthMetrics() {
     if (typeof window !== "undefined") {
       const currentUserStr = localStorage.getItem("currentUser");
       const savedProfileImage = localStorage.getItem("userProfileImage");
-      
+
       if (currentUserStr) {
         try {
           const currentUser: UserData = JSON.parse(currentUserStr);
@@ -132,10 +126,16 @@ export default function HealthMetrics() {
       const handleProfileImageUpdate = (e: CustomEvent) => {
         setUserProfileImage(e.detail);
       };
-      window.addEventListener("profileImageUpdated", handleProfileImageUpdate as EventListener);
-      
+      window.addEventListener(
+        "profileImageUpdated",
+        handleProfileImageUpdate as EventListener
+      );
+
       return () => {
-        window.removeEventListener("profileImageUpdated", handleProfileImageUpdate as EventListener);
+        window.removeEventListener(
+          "profileImageUpdated",
+          handleProfileImageUpdate as EventListener
+        );
       };
     }
   }, []);
@@ -213,9 +213,7 @@ export default function HealthMetrics() {
                 variant="ghost"
                 size="icon"
                 className="h-10 w-10 sm:h-12 sm:w-12"
-              >
-                
-              </Button>
+              ></Button>
             </div>
           </div>
         </div>
@@ -225,11 +223,11 @@ export default function HealthMetrics() {
           {/* Overall Metrics Section */}
           <Card>
             <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 pb-3 sm:pb-6">
-              <CardTitle className="text-xl sm:text-2xl font-roboto font-semibold">
+              <CardTitle className="text-xl sm:text-2xl font-roboto font-semibold text-[#000000]">
                 Overall metrics
               </CardTitle>
               <Select value={timeFilter} onValueChange={setTimeFilter}>
-                <SelectTrigger className="w-full sm:w-40 text-sm sm:text-base font-roboto">
+                <SelectTrigger className="w-full sm:w-40 text-sm sm:text-base font-roboto text-[#0000007D]">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -252,11 +250,7 @@ export default function HealthMetrics() {
               <ResponsiveContainer width="100%" height={400} minWidth={0}>
                 <LineChart data={overallMetricsData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                  <XAxis
-                    dataKey="month"
-                    fontSize={14}
-                    fontFamily="Roboto"
-                  />
+                  <XAxis dataKey="month" fontSize={14} fontFamily="Roboto" />
                   <YAxis
                     domain={[20, 120]}
                     ticks={[20, 40, 60, 80, 100, 120]}
@@ -274,7 +268,7 @@ export default function HealthMetrics() {
                   <Line
                     type="monotone"
                     dataKey="metric1"
-                    stroke="#3B82F6"
+                    stroke="#455A64"
                     name="Temperature"
                     strokeWidth={2.5}
                     dot={{ r: 5 }}
@@ -282,7 +276,7 @@ export default function HealthMetrics() {
                   <Line
                     type="monotone"
                     dataKey="metric2"
-                    stroke="#10B981"
+                    stroke="#34A853"
                     name="Blood Pressure"
                     strokeWidth={2.5}
                     dot={{ r: 5 }}
@@ -290,7 +284,7 @@ export default function HealthMetrics() {
                   <Line
                     type="monotone"
                     dataKey="metric3"
-                    stroke="#92400E"
+                    stroke="#526ACC"
                     name="Heart Rate"
                     strokeWidth={2.5}
                     dot={{ r: 5 }}
@@ -298,7 +292,7 @@ export default function HealthMetrics() {
                   <Line
                     type="monotone"
                     dataKey="metric4"
-                    stroke="#F59E0B"
+                    stroke="#C99604"
                     name="Glucose Levels"
                     strokeWidth={2.5}
                     dot={{ r: 5 }}
@@ -311,12 +305,12 @@ export default function HealthMetrics() {
           {/* Description Section */}
           <Card>
             <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 pb-3 sm:pb-6">
-              <CardTitle className="text-xl sm:text-2xl font-roboto font-semibold">
+              <CardTitle className="text-xl sm:text-2xl font-roboto font-semibold text-[#000000]">
                 Description
               </CardTitle>
               <div className="flex items-center gap-2">
                 <Select defaultValue="percentage">
-                  <SelectTrigger className="w-full sm:w-40 text-sm sm:text-base font-roboto">
+                  <SelectTrigger className="w-full sm:w-40 text-sm sm:text-base font-roboto text-[#0000007D]">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -331,9 +325,9 @@ export default function HealthMetrics() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-10 w-10 sm:h-12 sm:w-12"
+                  className="h-10 w-10 sm:h-12 sm:w-12 text-[#0000005E]"
                 >
-                  <MoreVertical className="h-5 w-5 sm:h-6 sm:w-6" />
+                  <Ellipsis className="h-5 w-5 sm:h-6 sm:w-6" />
                 </Button>
               </div>
             </CardHeader>
@@ -341,10 +335,10 @@ export default function HealthMetrics() {
               {progressMetrics.map((metric, index) => (
                 <div key={index} className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-base sm:text-lg font-medium font-roboto text-gray-900">
+                    <span className="text-base sm:text-lg font-medium font-roboto text-[#000000]">
                       {metric.name}
                     </span>
-                    <span className="text-sm sm:text-base font-roboto text-gray-600">
+                    <span className="text-sm sm:text-base font-roboto text-[#00000087]">
                       {metric.description}
                     </span>
                   </div>
@@ -369,4 +363,3 @@ export default function HealthMetrics() {
     </div>
   );
 }
-

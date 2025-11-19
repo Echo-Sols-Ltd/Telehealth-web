@@ -588,14 +588,17 @@ export default function Settings() {
                         <button
                           key={tab.id}
                           onClick={() => setActiveTab(tab.id)}
-                          className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 font-roboto ${
+                          className={`relative w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 font-roboto overflow-hidden ${
                             activeTab === tab.id
                               ? "bg-[#E1E6F8] text-[#6685FF]"
                               : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                           }`}
                         >
-                          <Icon className="h-5 w-5" />
-                          <span className="text-sm font-medium">
+                          {activeTab === tab.id && (
+                            <span className="absolute left-0 top-0 h-full w-2 bg-[#526ACC] rounded-r-full" />
+                          )}
+                          <Icon className="h-5 w-5 relative z-10" />
+                          <span className="text-sm font-medium relative z-10">
                             {tab.label}
                           </span>
                         </button>

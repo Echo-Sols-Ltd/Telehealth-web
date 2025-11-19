@@ -22,11 +22,7 @@ import {
 import { Sidebar } from "../components/sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Switch } from "@/components/ui/switch";
 
 type FormState = {
@@ -104,10 +100,7 @@ export default function DoctorSettingsPage() {
     }
   }, []);
 
-  const handleChange = (
-    field: keyof FormState,
-    value: string | boolean
-  ) => {
+  const handleChange = (field: keyof FormState, value: string | boolean) => {
     setFormState((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -183,18 +176,21 @@ export default function DoctorSettingsPage() {
                 {generalSections.map((section, index) => (
                   <button
                     key={section.label}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl border ${
+                    className={`relative w-full flex items-center gap-3 px-4 py-3 rounded-2xl border overflow-hidden ${
                       index === 0
                         ? "border-[#dfe4ff] bg-[#eef1ff] text-[#6685ff] shadow-sm"
                         : "border-transparent bg-gray-50 text-gray-700 hover:border-gray-200"
                     }`}
                   >
-                    <section.icon className="h-5 w-5" />
-                    <span className="flex-1 text-left font-medium">
+                    {index === 0 && (
+                      <span className="absolute left-0 top-0 h-full w-2 bg-[#526ACC] rounded-r-full" />
+                    )}
+                    <section.icon className="h-5 w-5 relative z-10" />
+                    <span className="flex-1 text-left font-medium relative z-10">
                       {section.label}
                     </span>
                     {index === 0 && (
-                      <span className="text-xs text-white bg-[#6685ff] px-2 py-0.5 rounded-full">
+                      <span className="text-xs text-white bg-[#6685ff] px-2 py-0.5 rounded-full relative z-10">
                         Active
                       </span>
                     )}
@@ -310,7 +306,9 @@ export default function DoctorSettingsPage() {
                 <Input
                   type="email"
                   value={formState.email}
-                  onChange={(event) => handleChange("email", event.target.value)}
+                  onChange={(event) =>
+                    handleChange("email", event.target.value)
+                  }
                   className="h-12 rounded-2xl bg-[#f7f7fb] border-0"
                 />
               </div>
@@ -421,4 +419,3 @@ function ToggleRow({
     </div>
   );
 }
-

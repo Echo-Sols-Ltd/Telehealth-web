@@ -54,7 +54,7 @@ const metrics = [
     unit: "sys",
     trend: "down",
     icon: TrendingDown,
-    color: "text-red-500",
+    color: "text-[#EC191DB5]",
   },
   {
     title: "Heart Rate",
@@ -62,7 +62,7 @@ const metrics = [
     unit: "bpm",
     trend: "up",
     icon: TrendingUp,
-    color: "text-green-500",
+    color: "text-[#34A853]",
   },
   {
     title: "Temperature",
@@ -70,7 +70,7 @@ const metrics = [
     unit: "°c",
     trend: "up",
     icon: TrendingUp,
-    color: "text-red-500",
+    color: "text-[#FF0000B0]",
   },
   {
     title: "Glucose Levels",
@@ -78,7 +78,7 @@ const metrics = [
     unit: "mg/dl",
     trend: "down",
     icon: TrendingDown,
-    color: "text-blue-500",
+    color: "text-[#526ACC]",
   },
 ];
 
@@ -104,8 +104,8 @@ const monthChartData = [
 
 // Progress data
 const progressData = [
-  { name: "Completed", value: 10, fill: "#3B82F6" },
-  { name: "Remaining", value: 90, fill: "#FCD34D" },
+  { name: "Completed", value: 10, fill: "#EAB308" },
+  { name: "Remaining", value: 90, fill: "#5687F2" },
 ];
 
 // Appointments data
@@ -166,7 +166,7 @@ export default function Dashboard() {
     if (typeof window !== "undefined") {
       const currentUserStr = localStorage.getItem("currentUser");
       const savedProfileImage = localStorage.getItem("userProfileImage");
-      
+
       if (currentUserStr) {
         try {
           const currentUser: UserData = JSON.parse(currentUserStr);
@@ -196,10 +196,16 @@ export default function Dashboard() {
       const handleProfileImageUpdate = (e: CustomEvent) => {
         setUserProfileImage(e.detail);
       };
-      window.addEventListener("profileImageUpdated", handleProfileImageUpdate as EventListener);
-      
+      window.addEventListener(
+        "profileImageUpdated",
+        handleProfileImageUpdate as EventListener
+      );
+
       return () => {
-        window.removeEventListener("profileImageUpdated", handleProfileImageUpdate as EventListener);
+        window.removeEventListener(
+          "profileImageUpdated",
+          handleProfileImageUpdate as EventListener
+        );
       };
     }
   }, []);
@@ -240,7 +246,7 @@ export default function Dashboard() {
                   <Search className="absolute left-3 top-1/2 h-5 w-5 sm:h-6 sm:w-6 -translate-y-1/2 text-muted-foreground" />
                   <Input
                     placeholder="Search.."
-                    className="pl-12 sm:pl-14 bg-blue-100 border-0 text-foreground placeholder:text-muted-foreground text-base sm:text-lg font-roboto h-10 sm:h-12"
+                    className="pl-12 sm:pl-14 bg-[#DEE5FF] border-0 text-foreground placeholder:text-muted-foreground text-base sm:text-lg font-roboto h-10 sm:h-12"
                   />
                 </div>
               </div>
@@ -251,7 +257,7 @@ export default function Dashboard() {
                 size="icon"
                 className="h-10 w-10 sm:h-12 sm:w-12"
               >
-                <Bell className="h-5 w-5 sm:h-6 sm:w-6" />
+                <Bell className="h-5 w-5 sm:h-6 sm:w-6 fill-[#061242]" />
               </Button>
               <Button
                 variant="ghost"
@@ -361,6 +367,7 @@ export default function Dashboard() {
                       name="Heart Rate"
                       strokeWidth={2.5}
                       dot={{ r: 5 }}
+                      className="text-[#526ACC]"
                     />
                     <Line
                       type="monotone"
@@ -369,6 +376,7 @@ export default function Dashboard() {
                       name="Blood Pressure"
                       strokeWidth={2.5}
                       dot={{ r: 5 }}
+                      className="text-[#000000]"
                     />
                   </LineChart>
                 </ResponsiveContainer>
@@ -414,14 +422,14 @@ export default function Dashboard() {
 
           <Card>
             <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 pb-3 sm:pb-6">
-              <CardTitle className="text-xl sm:text-2xl font-roboto font-semibold">
+              <CardTitle className="text-xl sm:text-2xl font-roboto font-semibold text-black">
                 Appointments
               </CardTitle>
               <Select
                 value={appointmentFilter}
                 onValueChange={setAppointmentFilter}
               >
-                <SelectTrigger className="w-full sm:w-40 text-sm sm:text-base font-roboto">
+                <SelectTrigger className="w-full sm:w-40 text-sm sm:text-base font-roboto bg-[#9EB1FE2B] text-black">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -441,19 +449,19 @@ export default function Dashboard() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="text-sm sm:text-base font-roboto font-semibold">
+                    <TableHead className="text-sm sm:text-base font-roboto font-semibold text-[#00000059]">
                       Name
                     </TableHead>
-                    <TableHead className="text-sm sm:text-base font-roboto font-semibold hidden sm:table-cell">
+                    <TableHead className="text-sm sm:text-base font-roboto font-semibold hidden sm:table-cell text-[#00000059]">
                       Department
                     </TableHead>
-                    <TableHead className="text-sm sm:text-base font-roboto font-semibold">
+                    <TableHead className="text-sm sm:text-base font-roboto font-semibold text-[#00000059]">
                       Time
                     </TableHead>
-                    <TableHead className="text-sm sm:text-base font-roboto font-semibold hidden md:table-cell">
+                    <TableHead className="text-sm sm:text-base font-roboto font-semibold hidden md:table-cell text-[#00000059]">
                       Status
                     </TableHead>
-                    <TableHead className="text-sm sm:text-base font-roboto font-semibold">
+                    <TableHead className="text-sm sm:text-base font-roboto font-semibold text-[#00000059]">
                       Actions
                     </TableHead>
                   </TableRow>
@@ -467,18 +475,18 @@ export default function Dashboard() {
                             src={appointment.image || "/placeholder.svg"}
                             alt={appointment.name}
                           />
-                          <AvatarFallback className="font-roboto">
+                          <AvatarFallback className="font-roboto text-[#00000042]">
                             JD
                           </AvatarFallback>
                         </Avatar>
-                        <span className="text-sm sm:text-base text-muted-foreground truncate font-roboto">
+                        <span className="text-sm sm:text-base truncate font-roboto text-[#00000042]">
                           {appointment.name}
                         </span>
                       </TableCell>
-                      <TableCell className="text-sm sm:text-base text-muted-foreground hidden sm:table-cell font-roboto">
+                      <TableCell className="text-sm sm:text-base text-[#00000042] hidden sm:table-cell font-roboto">
                         {appointment.department}
                       </TableCell>
-                      <TableCell className="text-sm sm:text-base text-muted-foreground font-roboto">
+                      <TableCell className="text-sm sm:text-base text-[#00000042] font-roboto">
                         {appointment.time}
                       </TableCell>
                       <TableCell className="hidden md:table-cell">
