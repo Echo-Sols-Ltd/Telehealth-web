@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import type { KeyboardEvent } from "react";
 import {
   Search,
   Bell,
@@ -88,6 +89,117 @@ const doctors = [
     status: "cancelled",
   },
 ];
+
+type ConversationPreview = {
+  id: number;
+  name: string;
+  message: string;
+  time: string;
+  unread: boolean;
+  avatar: string;
+  status: "active" | "archived";
+};
+
+type ChatMessage = {
+  id: number;
+  sender: "user" | "doctor";
+  text: string;
+  time: string;
+};
+
+const PATIENT_CONVERSATIONS: ConversationPreview[] = [
+  {
+    id: 1,
+    name: "Dr. John Doe",
+    message: "These are the prescribed meds for...",
+    time: "11:30 PM",
+    unread: true,
+    avatar: "/images/doc.png",
+    status: "active",
+  },
+  {
+    id: 2,
+    name: "Dr. Emily Carter",
+    message: "Let me know if you still feel dizzy.",
+    time: "9:45 PM",
+    unread: false,
+    avatar: "/images/doc.png",
+    status: "active",
+  },
+  {
+    id: 3,
+    name: "Dr. Alex Kim",
+    message: "See you next week for follow up.",
+    time: "Yesterday",
+    unread: false,
+    avatar: "/images/doc.png",
+    status: "archived",
+  },
+];
+
+const PATIENT_MESSAGES: Record<number, ChatMessage[]> = {
+  1: [
+    {
+      id: 1,
+      sender: "doctor",
+      text: "Thanks for sharing your heart rate. What else are you experiencing today?",
+      time: "11:20 PM",
+    },
+    {
+      id: 2,
+      sender: "user",
+      text: "My heart rate is 97 bpm. What can I do to improve my health?",
+      time: "11:25 PM",
+    },
+    {
+      id: 3,
+      sender: "doctor",
+      text: `Thanks for sharing your heart rate. A resting heart rate of 97 bpm is still within the normal range (60–100 bpm), but it's on the higher side. This can sometimes be influenced by stress, caffeine, dehydration, or lack of sleep.
+
+To help bring it down, I recommend:
+• Staying hydrated and limiting caffeine or alcohol.
+• Getting enough rest and practicing relaxation techniques like deep breathing.
+• Maintaining regular physical activity such as walking or light exercise.
+
+If your heart rate stays elevated over time or you notice symptoms like chest pain, dizziness, or shortness of breath, schedule a check-up so we can rule out any underlying issues.`,
+      time: "11:28 PM",
+    },
+    {
+      id: 4,
+      sender: "user",
+      text: "Ok. Thank you!",
+      time: "11:30 PM",
+    },
+  ],
+  2: [
+    {
+      id: 1,
+      sender: "doctor",
+      text: "How are you feeling after the new medication?",
+      time: "9:30 PM",
+    },
+    {
+      id: 2,
+      sender: "user",
+      text: "I'm feeling better but still a bit light-headed.",
+      time: "9:40 PM",
+    },
+  ],
+  3: [
+    {
+      id: 1,
+      sender: "doctor",
+      text: "Reminder: your follow-up is next Wednesday at 10:00 AM.",
+      time: "Yesterday",
+    },
+  ],
+};
+
+const DEFAULT_AUTO_REPLY =
+  "Thanks for the update! I'll review this and follow up shortly.";
+
+const formatTime = (date: Date) =>
+  date.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
 
 type Step = "booking" | "payment" | "messages";
 
@@ -515,7 +627,11 @@ export default function Appointments() {
           )}
 
           {currentStep === "messages" && (
-            <MessagesPage onBack={() => setCurrentStep("payment")} />
+            <MessagesPage
+              onBack={() => setCurrentStep("payment")}
+              userAvatar={userProfileImage}
+              userInitials={userInitials}
+            />
           )}
         </div>
       </main>
@@ -832,225 +948,316 @@ function AnimatedCurvyLines() {
 }
 
 // Messages Page Component
-function MessagesPage({ onBack }: { onBack: () => void }) {
-  const conversations = [
-    {
-      id: 1,
-      name: "John",
-      message: "These are the prescribed meds for...",
-      time: "11:30PM",
-      unread: true,
-      avatar: "/images/doc.png",
-    },
-    {
-      id: 2,
-      name: "John",
-      message: "These are the prescribed meds for...",
-      time: "10:15PM",
-      unread: true,
-      avatar: "/images/doc.png",
-    },
-    {
-      id: 3,
-      name: "John",
-      message: "These are the prescribed meds for...",
-      time: "9:00PM",
-      unread: false,
-      avatar: "/images/doc.png",
-    },
-  ];
+function MessagesPage({
+  onBack,
+  userAvatar,
+  userInitials,
+}: {
+  onBack: () => void;
+  userAvatar: string | null;
+  userInitials: string;
+}) {
+  const [tab, setTab] = useState<"active" | "archived">("active");
+  const [search, setSearch] = useState("");
+  const [conversations, setConversations] = useState(PATIENT_CONVERSATIONS);
+  const [messagesByConversation, setMessagesByConversation] =
+    useState<Record<number, ChatMessage[]>>(PATIENT_MESSAGES);
+  const [selectedConversationId, setSelectedConversationId] = useState<
+    number | null
+  >(PATIENT_CONVERSATIONS[0]?.id ?? null);
+  const [messageInput, setMessageInput] = useState("");
 
-  const messages = [
-    {
-      id: 1,
+  const patientAvatar = userAvatar || "/images/@profile.png";
+
+  const filteredConversations = conversations.filter(
+    (conversation) =>
+      conversation.status === tab &&
+      conversation.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const selectedConversation = conversations.find(
+    (conversation) => conversation.id === selectedConversationId
+  );
+
+  const selectedMessages =
+    (selectedConversationId &&
+      messagesByConversation[selectedConversationId]) ||
+    [];
+
+  const handleSelectConversation = (conversationId: number) => {
+    setSelectedConversationId(conversationId);
+    setConversations((prev) =>
+      prev.map((conversation) =>
+        conversation.id === conversationId
+          ? { ...conversation, unread: false }
+          : conversation
+      )
+    );
+  };
+
+  const handleSendMessage = () => {
+    if (!messageInput.trim() || !selectedConversationId) {
+      return;
+    }
+
+    const trimmed = messageInput.trim();
+    const timestamp = formatTime(new Date());
+    const newMessage: ChatMessage = {
+      id: Date.now(),
       sender: "user",
-      text: "My heart rate is 97 bpm. What can I do to improve my health?",
-      time: "11:25 PM",
-    },
-    {
-      id: 2,
-      sender: "doctor",
-      text: `Your heart rate of 97 beats per minute (bpm) is slightly higher than the typical resting range for most adults (60-100 bpm).
+      text: trimmed,
+      time: timestamp,
+    };
+    const conversationId = selectedConversationId;
 
-Here are a few general steps that may help support a healthier heart rate:
+    setMessagesByConversation((prev) => ({
+      ...prev,
+      [conversationId]: [...(prev[conversationId] ?? []), newMessage],
+    }));
 
-1. **Relaxation techniques:** Try deep breathing, meditation, or light stretching to lower stress levels.
+    setConversations((prev) =>
+      prev.map((conversation) =>
+        conversation.id === conversationId
+          ? {
+              ...conversation,
+              message: trimmed,
+              time: timestamp,
+              unread: false,
+            }
+          : conversation
+      )
+    );
 
-2. **Regular physical activity:** Moderate exercise such as walking, cycling, or yoga can help improve long-term heart health.
+    setMessageInput("");
 
-3. **Healthy habits:** Stay hydrated, limit caffeine/alcohol, and choose balanced meals rich in fruits, vegetables, and whole grains.
+    setTimeout(() => {
+      const reply: ChatMessage = {
+        id: Date.now(),
+        sender: "doctor",
+        text: DEFAULT_AUTO_REPLY,
+        time: formatTime(new Date()),
+      };
+      setMessagesByConversation((prev) => ({
+        ...prev,
+        [conversationId]: [...(prev[conversationId] ?? []), reply],
+      }));
 
-4. **Rest well:** Aim for 7-9 hours of sleep each night, as poor sleep can raise heart rate.
+      setConversations((prev) =>
+        prev.map((conversation) =>
+          conversation.id === conversationId
+            ? {
+                ...conversation,
+                message: "Thanks for the update! I'll reply shortly.",
+                time: formatTime(new Date()),
+                unread: conversationId !== selectedConversationId,
+              }
+            : conversation
+        )
+      );
+    }, 1500);
+  };
 
-5. **Track patterns:** Monitor your heart rate regularly and note any symptoms like dizziness, chest pain, or shortness of breath.
-
-**Important:** If you notice your heart rate is consistently high, or if you experience concerning symptoms, please seek medical advice from a healthcare professional.`,
-      time: "11:28 PM",
-    },
-    {
-      id: 3,
-      sender: "user",
-      text: "Ok. Thank You!",
-      time: "11:30 PM",
-    },
-  ];
+  const handleInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      handleSendMessage();
+    }
+  };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      {/* Left Column - Conversations */}
-      <div className="lg:col-span-1 bg-white rounded-xl border border-gray-200 shadow-sm">
-        {/* Tabs */}
-        <div className="flex border-b border-gray-200 p-4">
-          <button className="flex-1 px-4 py-2 text-sm font-medium text-[#6685FF] font-roboto relative">
-            ACTIVE
-            <span className="absolute top-1 right-2 w-2 h-2 bg-[#6685FF] rounded-full" />
-          </button>
-          <button className="flex-1 px-4 py-2 text-sm font-medium text-gray-600 font-roboto hover:text-gray-900">
-            ARCHIVE
-          </button>
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <Button variant="ghost" size="icon" onClick={onBack}>
+          <ArrowLeft className="h-5 w-5" />
+        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="icon" className="h-10 w-10">
+            <MessageCircle className="h-5 w-5" />
+          </Button>
+          <Button variant="ghost" size="icon" className="h-10 w-10">
+            <Bell className="h-5 w-5" />
+          </Button>
         </div>
+      </div>
 
-        {/* Conversation List */}
-        <div className="overflow-y-auto max-h-[calc(100vh-250px)]">
-          {conversations.map((conv) => (
-            <div
-              key={conv.id}
-              className="p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors duration-200"
-            >
-              <div className="flex items-start gap-3">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        {/* Left Column */}
+        <div className="lg:col-span-1 bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col">
+          <div className="p-4 border-b border-gray-200 space-y-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+              <Input
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder="Search conversations"
+                className="pl-10 bg-gray-50 border-0 h-11 rounded-full text-sm"
+              />
+            </div>
+            <div className="flex border border-gray-200 rounded-full overflow-hidden text-sm font-semibold">
+              {(["active", "archived"] as const).map((value) => (
+                <button
+                  key={value}
+                  onClick={() => setTab(value)}
+                  className={`flex-1 py-2 transition ${
+                    tab === value
+                      ? "bg-[#6685FF] text-white"
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                >
+                  {value.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex-1 overflow-y-auto">
+            {filteredConversations.map((conversation) => (
+              <button
+                key={conversation.id}
+                onClick={() => handleSelectConversation(conversation.id)}
+                className={`w-full p-4 flex items-start gap-3 border-b border-gray-100 text-left transition ${
+                  conversation.id === selectedConversationId
+                    ? "bg-[#eef1ff]"
+                    : "hover:bg-gray-50"
+                }`}
+              >
                 <Image
-                  src={conv.avatar}
-                  alt={conv.name}
+                  src={conversation.avatar}
+                  alt={conversation.name}
                   width={50}
                   height={50}
                   className="rounded-full object-cover"
                 />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-1">
-                    <h4 className="font-semibold font-roboto text-gray-900">
-                      {conv.name}
+                    <h4 className="font-semibold text-gray-900">
+                      {conversation.name}
                     </h4>
-                    <span className="text-xs text-gray-500 font-roboto">
-                      {conv.time}
+                    <span className="text-xs text-gray-500">
+                      {conversation.time}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-600 font-roboto truncate">
-                    {conv.message}
+                  <p className="text-sm text-gray-600 truncate">
+                    {conversation.message}
                   </p>
-                  {conv.unread && (
+                  {conversation.unread && (
                     <span className="inline-block w-2 h-2 bg-[#6685FF] rounded-full mt-2" />
                   )}
                 </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Right Column - Chat Window */}
-      <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col">
-        {/* Chat Header */}
-        <div className="flex items-center gap-3 p-4 border-b border-gray-200">
-          <Image
-            src="/images/doc.png"
-            alt="Dr. John Doe"
-            width={50}
-            height={50}
-            className="rounded-full object-cover"
-          />
-          <div className="flex-1">
-            <h3 className="font-semibold font-roboto text-gray-900">
-              Dr. John Doe
-            </h3>
-            <p className="text-sm text-gray-500 font-roboto">Online</p>
-          </div>
-        </div>
-
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
-          {/* Today Label */}
-          <div className="text-center">
-            <span className="text-sm font-roboto text-gray-500 bg-gray-100 px-4 py-2 rounded-full">
-              Today
-            </span>
-          </div>
-
-          {/* Message List */}
-          <div className="space-y-4">
-            {messages.map((message, index) => (
-              <div
-                key={message.id}
-                className={`flex items-start gap-3 ${
-                  message.sender === "user" ? "justify-end" : "justify-start"
-                }`}
-                style={{
-                  animationDelay: `${index * 150}ms`,
-                }}
-              >
-                {/* Doctor Avatar (left side) */}
-                {message.sender === "doctor" && (
-                  <Image
-                    src="/images/doc.png"
-                    alt="Dr. John Doe"
-                    width={40}
-                    height={40}
-                    className="rounded-full object-cover shrink-0"
-                  />
-                )}
-
-                {/* Message Bubble */}
-                <div
-                  className={`max-w-[75%] rounded-2xl px-4 py-3 ${
-                    message.sender === "user"
-                      ? "bg-[#6685FF] text-white"
-                      : "bg-gray-100 text-gray-900"
-                  }`}
-                >
-                  <p
-                    className={`text-sm font-roboto whitespace-pre-wrap ${
-                      message.sender === "user" ? "text-white" : "text-gray-900"
-                    }`}
-                  >
-                    {message.text}
-                  </p>
-                  <span
-                    className={`text-xs mt-2 block ${
-                      message.sender === "user"
-                        ? "text-blue-100"
-                        : "text-gray-500"
-                    }`}
-                  >
-                    {message.time}
-                  </span>
-                </div>
-
-                {/* User Avatar (right side) */}
-                {message.sender === "user" && (
-                  <div className="w-10 h-10 rounded-full bg-[#6685FF] flex items-center justify-center shrink-0">
-                    <span className="text-white text-sm font-roboto font-semibold">
-                      JD
-                    </span>
-                  </div>
-                )}
-              </div>
+              </button>
             ))}
           </div>
         </div>
 
-        {/* Input Area */}
-        <div className="p-4 border-t border-gray-200">
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="h-10 w-10">
-              <Plus className="h-5 w-5" />
-            </Button>
-            <Input
-              placeholder="Type something..."
-              className="flex-1 bg-blue-50 border-0 h-12 rounded-full px-4 font-roboto"
-            />
-            <Button variant="ghost" size="icon" className="h-10 w-10">
-              <MessageCircle className="h-5 w-5" />
-            </Button>
-          </div>
+        {/* Right Column */}
+        <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col">
+          {selectedConversation ? (
+            <>
+              <div className="flex items-center gap-3 p-4 border-b border-gray-200">
+                <Image
+                  src={selectedConversation.avatar}
+                  alt={selectedConversation.name}
+                  width={50}
+                  height={50}
+                  className="rounded-full object-cover"
+                />
+                <div className="flex-1">
+                  <h3 className="font-semibold text-gray-900">
+                    {selectedConversation.name}
+                  </h3>
+                  <p className="text-sm text-gray-500">Online</p>
+                </div>
+              </div>
+
+              <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                <div className="text-center">
+                  <span className="text-sm text-gray-500 bg-gray-100 px-4 py-2 rounded-full">
+                    Today
+                  </span>
+                </div>
+                <div className="space-y-4">
+                  {selectedMessages.map((message) => (
+                    <div
+                      key={message.id}
+                      className={`flex items-start gap-3 ${
+                        message.sender === "user"
+                          ? "justify-end"
+                          : "justify-start"
+                      }`}
+                    >
+                      {message.sender === "doctor" && (
+                        <Image
+                          src={selectedConversation.avatar}
+                          alt={selectedConversation.name}
+                          width={40}
+                          height={40}
+                          className="rounded-full object-cover shrink-0"
+                        />
+                      )}
+                      <div
+                        className={`max-w-[75%] rounded-2xl px-4 py-3 ${
+                          message.sender === "user"
+                            ? "bg-[#6685FF] text-white"
+                            : "bg-gray-100 text-gray-900"
+                        }`}
+                      >
+                        <p className="text-sm whitespace-pre-wrap">
+                          {message.text}
+                        </p>
+                        <span
+                          className={`text-xs mt-2 block ${
+                            message.sender === "user"
+                              ? "text-blue-100"
+                              : "text-gray-500"
+                          }`}
+                        >
+                          {message.time}
+                        </span>
+                      </div>
+                      {message.sender === "user" && (
+                        <Avatar className="h-10 w-10 border border-[#dfe4ff] shrink-0">
+                          <AvatarImage
+                            src={patientAvatar}
+                            alt="Patient avatar"
+                          />
+                          <AvatarFallback className="bg-[#6685FF] text-white">
+                            {userInitials}
+                          </AvatarFallback>
+                        </Avatar>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="p-4 border-t border-gray-200">
+                <div className="flex items-center gap-2">
+                  <Button variant="ghost" size="icon" className="h-10 w-10">
+                    <Plus className="h-5 w-5" />
+                  </Button>
+                  <Input
+                    value={messageInput}
+                    onChange={(event) => setMessageInput(event.target.value)}
+                    onKeyDown={handleInputKeyDown}
+                    placeholder="Type something..."
+                    className="flex-1 bg-blue-50 border-0 h-12 rounded-full px-4"
+                  />
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-10 w-10"
+                    onClick={handleSendMessage}
+                  >
+                    <MessageCircle className="h-5 w-5" />
+                  </Button>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="flex-1 flex items-center justify-center text-gray-400">
+              Select a conversation to start chatting
+            </div>
+          )}
         </div>
       </div>
     </div>
