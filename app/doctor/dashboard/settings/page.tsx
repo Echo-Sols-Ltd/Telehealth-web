@@ -176,10 +176,10 @@ export default function DoctorSettingsPage() {
                 {generalSections.map((section, index) => (
                   <button
                     key={section.label}
-                    className={`relative w-full flex items-center gap-3 px-4 py-3 rounded-2xl border overflow-hidden ${
+                    className={`relative w-full flex items-center gap-3 px-4 py-3 rounded-2xl border overflow-hidden transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] ${
                       index === 0
                         ? "border-[#dfe4ff] bg-[#eef1ff] text-[#6685ff] shadow-sm"
-                        : "border-transparent bg-gray-50 text-gray-700 hover:border-gray-200"
+                        : "border-transparent bg-gray-50 text-gray-700 hover:border-gray-200 hover:bg-gray-100"
                     }`}
                   >
                     {index === 0 && (
@@ -207,7 +207,7 @@ export default function DoctorSettingsPage() {
                 {medicalSections.map((section) => (
                   <button
                     key={section.label}
-                    className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl border border-transparent bg-gray-50 text-gray-700 hover:border-gray-200"
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl border border-transparent bg-gray-50 text-gray-700 hover:border-gray-200 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-gray-100"
                   >
                     <section.icon className="h-5 w-5" />
                     <span className="flex-1 text-left font-medium">
@@ -225,7 +225,7 @@ export default function DoctorSettingsPage() {
                 Edit Profile
               </h2>
               {saveSuccess && (
-                <span className="flex items-center gap-2 text-sm text-green-600">
+                <span className="flex items-center gap-2 text-sm text-green-600 animate-in fade-in slide-in-from-right duration-300">
                   <Check className="h-4 w-4" />
                   Saved
                 </span>
@@ -254,7 +254,7 @@ export default function DoctorSettingsPage() {
                   )}
                 </div>
                 <button
-                  className="absolute -bottom-2 -right-2 bg-[#6685ff] text-white p-2 rounded-full shadow-lg"
+                  className="absolute -bottom-2 -right-2 bg-[#6685ff] text-white p-2 rounded-full shadow-lg transition-all duration-300 hover:scale-110 active:scale-95"
                   onClick={() => fileInputRef.current?.click()}
                   type="button"
                 >
@@ -284,7 +284,7 @@ export default function DoctorSettingsPage() {
                   onChange={(event) =>
                     handleChange("fullName", event.target.value)
                   }
-                  className="h-12 rounded-2xl bg-[#f7f7fb] border-0"
+                  className="h-12 rounded-2xl bg-[#f7f7fb] border-0 transition-all duration-200 focus:ring-2 focus:ring-[#6685ff]/50"
                 />
               </div>
               <div className="space-y-2">
@@ -296,7 +296,7 @@ export default function DoctorSettingsPage() {
                   onChange={(event) =>
                     handleChange("nationalId", event.target.value)
                   }
-                  className="h-12 rounded-2xl bg-[#f7f7fb] border-0"
+                  className="h-12 rounded-2xl bg-[#f7f7fb] border-0 transition-all duration-200 focus:ring-2 focus:ring-[#6685ff]/50"
                 />
               </div>
               <div className="space-y-2">
@@ -309,7 +309,7 @@ export default function DoctorSettingsPage() {
                   onChange={(event) =>
                     handleChange("email", event.target.value)
                   }
-                  className="h-12 rounded-2xl bg-[#f7f7fb] border-0"
+                  className="h-12 rounded-2xl bg-[#f7f7fb] border-0 transition-all duration-200 focus:ring-2 focus:ring-[#6685ff]/50"
                 />
               </div>
               <div className="space-y-2">
@@ -321,7 +321,7 @@ export default function DoctorSettingsPage() {
                   onChange={(event) =>
                     handleChange("medicalCode", event.target.value)
                   }
-                  className="h-12 rounded-2xl bg-[#f7f7fb] border-0"
+                  className="h-12 rounded-2xl bg-[#f7f7fb] border-0 transition-all duration-200 focus:ring-2 focus:ring-[#6685ff]/50"
                 />
               </div>
               <div className="space-y-2">
@@ -334,7 +334,7 @@ export default function DoctorSettingsPage() {
                   onChange={(event) =>
                     handleChange("password", event.target.value)
                   }
-                  className="h-12 rounded-2xl bg-[#f7f7fb] border-0"
+                  className="h-12 rounded-2xl bg-[#f7f7fb] border-0 transition-all duration-200 focus:ring-2 focus:ring-[#6685ff]/50"
                 />
               </div>
               <div className="space-y-2">
@@ -347,14 +347,14 @@ export default function DoctorSettingsPage() {
                     onChange={(event) =>
                       handleChange("phonePrefix", event.target.value)
                     }
-                    className="h-12 rounded-2xl bg-[#f7f7fb] border-0 w-24"
+                    className="h-12 rounded-2xl bg-[#f7f7fb] border-0 w-24 transition-all duration-200 focus:ring-2 focus:ring-[#6685ff]/50"
                   />
                   <Input
                     value={formState.phoneNumber}
                     onChange={(event) =>
                       handleChange("phoneNumber", event.target.value)
                     }
-                    className="h-12 rounded-2xl bg-[#f7f7fb] border-0 flex-1"
+                    className="h-12 rounded-2xl bg-[#f7f7fb] border-0 flex-1 transition-all duration-200 focus:ring-2 focus:ring-[#6685ff]/50"
                   />
                 </div>
               </div>
@@ -376,19 +376,22 @@ export default function DoctorSettingsPage() {
                 value={formState.scanQr}
                 onChange={(value) => handleChange("scanQr", value)}
               />
-              <button className="flex items-center justify-between w-full px-4 py-3 rounded-2xl bg-gray-50 text-gray-700 hover:bg-gray-100 transition">
+              <button className="flex items-center justify-between w-full px-4 py-3 rounded-2xl bg-gray-50 text-gray-700 hover:bg-gray-100 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
                 <span className="font-medium">Google Authenticator</span>
-                <ChevronRight className="h-5 w-5" />
+                <ChevronRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
               </button>
             </div>
 
             <Button
-              className="w-full h-14 text-lg font-semibold bg-[#6685ff] hover:bg-[#516de0]"
+              className="w-full h-14 text-lg font-semibold bg-[#6685ff] hover:bg-[#516de0] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
               onClick={handleSave}
               disabled={saving}
             >
               {saving ? (
-                "Saving..."
+                <span className="flex items-center justify-center gap-2">
+                  <span className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></span>
+                  Saving...
+                </span>
               ) : (
                 <>
                   <Save className="h-5 w-5 mr-2" />

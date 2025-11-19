@@ -280,7 +280,7 @@ export default function Settings() {
                 )}
                 <button
                   onClick={() => fileInputRef.current?.click()}
-                  className="absolute bottom-0 right-0 bg-[#6685FF] text-white rounded-full p-2 hover:bg-[#526ACC] transition-colors duration-200 shadow-lg"
+                  className="absolute bottom-0 right-0 bg-[#6685FF] text-white rounded-full p-2 hover:bg-[#526ACC] transition-all duration-300 hover:scale-110 active:scale-95 shadow-lg"
                 >
                   <Camera className="h-5 w-5" />
                 </button>
@@ -305,7 +305,7 @@ export default function Settings() {
                   onChange={(e) =>
                     handleInputChange("fullName", e.target.value)
                   }
-                  className="h-12 font-roboto"
+                  className="h-12 font-roboto transition-all duration-200 focus:ring-2 focus:ring-[#6685FF]/50"
                 />
               </div>
 
@@ -318,7 +318,7 @@ export default function Settings() {
                   onChange={(e) =>
                     handleInputChange("nationalId", e.target.value)
                   }
-                  className="h-12 font-roboto"
+                  className="h-12 font-roboto transition-all duration-200 focus:ring-2 focus:ring-[#6685FF]/50"
                 />
               </div>
 
@@ -330,7 +330,7 @@ export default function Settings() {
                   type="email"
                   value={formData.email}
                   onChange={(e) => handleInputChange("email", e.target.value)}
-                  className="h-12 font-roboto"
+                  className="h-12 font-roboto transition-all duration-200 focus:ring-2 focus:ring-[#6685FF]/50"
                 />
               </div>
 
@@ -343,7 +343,7 @@ export default function Settings() {
                   onChange={(e) =>
                     handleInputChange("medicalCode", e.target.value)
                   }
-                  className="h-12 font-roboto"
+                  className="h-12 font-roboto transition-all duration-200 focus:ring-2 focus:ring-[#6685FF]/50"
                 />
               </div>
 
@@ -357,7 +357,7 @@ export default function Settings() {
                   onChange={(e) =>
                     handleInputChange("password", e.target.value)
                   }
-                  className="h-12 font-roboto"
+                  className="h-12 font-roboto transition-all duration-200 focus:ring-2 focus:ring-[#6685FF]/50"
                 />
               </div>
 
@@ -370,7 +370,7 @@ export default function Settings() {
                   onChange={(e) =>
                     handleInputChange("phoneNumber", e.target.value)
                   }
-                  className="h-12 font-roboto"
+                  className="h-12 font-roboto transition-all duration-200 focus:ring-2 focus:ring-[#6685FF]/50"
                 />
               </div>
             </div>
@@ -395,11 +395,11 @@ export default function Settings() {
             </div>
 
             {/* Google Authenticator */}
-            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors duration-200">
+            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] group">
               <span className="font-roboto text-gray-900">
                 Google Authenticator
               </span>
-              <ArrowRight className="h-5 w-5 text-gray-400" />
+              <ArrowRight className="h-5 w-5 text-gray-400 transition-transform duration-300 group-hover:translate-x-1" />
             </div>
 
             {/* Save Button */}
@@ -407,9 +407,16 @@ export default function Settings() {
               <Button
                 onClick={handleSave}
                 disabled={isSaving}
-                className="bg-[#6685FF] hover:bg-[#526ACC] text-white px-8 py-6 text-base font-roboto font-semibold transition-all duration-300 hover:scale-105 disabled:opacity-50"
+                className="bg-[#6685FF] hover:bg-[#526ACC] text-white px-8 py-6 text-base font-roboto font-semibold transition-all duration-300 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
-                {isSaving ? "Saving..." : "SAVE"}
+                {isSaving ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <span className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></span>
+                    Saving...
+                  </span>
+                ) : (
+                  "SAVE"
+                )}
               </Button>
             </div>
           </div>
@@ -588,7 +595,7 @@ export default function Settings() {
                         <button
                           key={tab.id}
                           onClick={() => setActiveTab(tab.id)}
-                          className={`relative w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 font-roboto overflow-hidden ${
+                          className={`relative w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 font-roboto overflow-hidden hover:scale-[1.02] active:scale-[0.98] ${
                             activeTab === tab.id
                               ? "bg-[#E1E6F8] text-[#6685FF]"
                               : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
@@ -637,12 +644,12 @@ function ToggleSwitch({
       <span className="font-roboto text-gray-900">{label}</span>
       <button
         onClick={() => onChange(!checked)}
-        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#6685FF] focus:ring-offset-2 ${
+        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#6685FF] focus:ring-offset-2 hover:scale-105 active:scale-95 ${
           checked ? "bg-[#6685FF]" : "bg-gray-300"
         }`}
       >
         <span
-          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ${
+          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 ${
             checked ? "translate-x-6" : "translate-x-1"
           }`}
         />

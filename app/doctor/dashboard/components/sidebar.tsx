@@ -26,7 +26,7 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
       {/* Mobile overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden animate-in fade-in duration-300"
           onClick={onClose}
         />
       )}
@@ -46,7 +46,7 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
         <div className="lg:hidden flex justify-end p-4 shrink-0">
           <button
             onClick={onClose}
-            className="p-2 rounded-lg hover:bg-gray-100 transition"
+            className="p-2 rounded-lg hover:bg-gray-100 transition-all duration-300 hover:scale-110 active:scale-95"
           >
             <X size={24} />
           </button>
@@ -120,7 +120,7 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
               </p>
             </div>
             <button
-              className="relative z-10 w-full text-white py-3 rounded-lg text-base font-semibold hover:opacity-90 transition font-roboto-flex"
+              className="relative z-10 w-full text-white py-3 rounded-lg text-base font-semibold hover:opacity-90 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] font-roboto-flex"
               style={{ backgroundColor: "#6685FF" }}
             >
               Upgrade
@@ -155,10 +155,10 @@ function NavItem({
     }
   };
 
-  const className = `flex items-center gap-4 px-6 py-4 transition relative rounded-lg ${
+  const className = `flex items-center gap-4 px-6 py-4 transition-all duration-300 relative rounded-lg hover:scale-[1.02] active:scale-[0.98] ${
     active
       ? "bg-[#E1E6F8] text-[#6685FF]"
-      : "text-[#00000069] hover:text-[#6685FF]"
+      : "text-[#00000069] hover:text-[#6685FF] hover:bg-gray-50"
   }`;
 
   if (label === "Log Out") {

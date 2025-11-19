@@ -108,7 +108,7 @@ export default function LoginPage() {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full px-5 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6685FF] font-roboto-flex font-light text-black"
+                className="w-full px-5 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6685FF] transition-all duration-200 hover:border-[#6685FF]/50 font-roboto-flex font-light text-black"
                 placeholder="Enter your email"
               />
             </div>
@@ -127,13 +127,15 @@ export default function LoginPage() {
                 value={formData.password}
                 onChange={handleChange}
                 required
-                className="w-full px-5 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6685FF] font-roboto-flex font-light text-black"
+                className="w-full px-5 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6685FF] transition-all duration-200 hover:border-[#6685FF]/50 font-roboto-flex font-light text-black"
                 placeholder="Enter your password"
               />
             </div>
 
             {error && (
-              <div className="text-red-500 text-sm text-center">{error}</div>
+              <div className="text-red-500 text-sm text-center animate-in fade-in slide-in-from-top duration-300">
+                {error}
+              </div>
             )}
 
             <div className="text-right mb-4">
@@ -149,7 +151,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-5 px-6 rounded-lg font-semibold text-white transition-all shadow-md hover:shadow-lg disabled:opacity-50 font-roboto-flex"
+              className="w-full py-5 px-6 rounded-lg font-semibold text-white transition-all duration-300 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 font-roboto-flex"
               style={{ backgroundColor: "#6685FF" }}
             >
               {isLoading ? "Logging in..." : "Log In"}
@@ -167,7 +169,7 @@ export default function LoginPage() {
           <div className="flex justify-center gap-4 sm:gap-6 mb-6">
             <button
               onClick={() => handleSocialLogin("Google")}
-              className="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-md hover:shadow-lg transition-all"
+              className="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 active:scale-95"
               aria-label="Sign in with Google"
             >
               <svg width="24" height="24" viewBox="0 0 24 24">
@@ -191,7 +193,7 @@ export default function LoginPage() {
             </button>
             <button
               onClick={() => handleSocialLogin("Apple")}
-              className="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-md hover:shadow-lg transition-all"
+              className="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 active:scale-95"
               aria-label="Sign in with Apple"
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="#000000">
@@ -200,7 +202,7 @@ export default function LoginPage() {
             </button>
             <button
               onClick={() => handleSocialLogin("LinkedIn")}
-              className="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-md hover:shadow-lg transition-all"
+              className="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 active:scale-95"
               aria-label="Sign in with LinkedIn"
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="#0077B5">
@@ -209,7 +211,7 @@ export default function LoginPage() {
             </button>
             <button
               onClick={() => handleSocialLogin("Twitter/X")}
-              className="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-md hover:shadow-lg transition-all"
+              className="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 active:scale-95"
               aria-label="Sign in with X"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="#000000">
