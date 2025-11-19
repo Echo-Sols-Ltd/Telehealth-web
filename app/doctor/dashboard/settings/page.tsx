@@ -223,7 +223,7 @@ export default function DoctorSettingsPage() {
             </div>
           </section>
 
-          <section className="bg-white rounded-[32px] p-6 sm:p-8 shadow-lg border border-gray-100 space-y-6">
+          <section className="bg-white rounded-4xl p-6 sm:p-8 shadow-lg border border-gray-100 space-y-6">
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold text-[#0b1235] font-roboto">
                 Edit Profile
