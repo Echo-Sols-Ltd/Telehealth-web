@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import {
   Search,
   Bell,
@@ -22,9 +22,6 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
 } from "recharts";
 import {
   Select,
@@ -36,21 +33,13 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sidebar } from "../components/sidebar";
 import Link from "next/link";
+import { ProgressTracker } from "@/components/ui/progress-tracker";
 
 // Chart data types
 interface ChartDataPoint {
   time: string;
   value: number;
 }
-
-// Payments data for circular chart
-// Based on design: 10 total, 2 pending, 8 successful
-// Chart shows: Completed (black ~45%), Pending (grey ~20%), Successful (blue ~35%)
-const paymentsData = [
-  { name: "Completed", value: 45, fill: "#000000" }, // Black
-  { name: "Pending", value: 20, fill: "#E5E7EB" }, // Grey
-  { name: "Successful", value: 35, fill: "#6685FF" }, // Blue
-];
 
 // Emergencies data
 const emergencies = [
@@ -89,6 +78,7 @@ const appointments = [
     condition: "Heart Attack",
     time: "09:30 am",
     color: "#6685FF",
+    status: "emergency",
   },
   {
     id: 2,
@@ -97,6 +87,7 @@ const appointments = [
     condition: "Hypertension",
     time: "09:30 am",
     color: "#061242",
+    status: "upcoming",
   },
   {
     id: 3,
@@ -105,6 +96,7 @@ const appointments = [
     condition: "Diabetes",
     time: "09:30 am",
     color: "#344482",
+    status: "completed",
   },
   {
     id: 4,
@@ -113,6 +105,16 @@ const appointments = [
     condition: "Fever",
     time: "09:30 am",
     color: "#FFB9B9",
+    status: "cancelled",
+  },
+  {
+    id: 5,
+    date: "25 Sep",
+    patient: "Jane Doe",
+    condition: "Asthma",
+    time: "10:30 am",
+    color: "#5C6BC0",
+    status: "upcoming",
   },
 ];
 
@@ -122,8 +124,6 @@ export default function DoctorHome() {
   const [userProfileImage, setUserProfileImage] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [doctorName, setDoctorName] = useState("Dr.KAYIRANGA James");
-  const pieChartRef = useRef<HTMLDivElement>(null);
-  const [pieChartSize, setPieChartSize] = useState(160);
 
   // Chart data state - can be updated with real API data
   const [notificationsData, setNotificationsData] = useState<ChartDataPoint[]>([
@@ -160,6 +160,81 @@ export default function DoctorHome() {
   const [unreadNotifications, setUnreadNotifications] = useState(5);
   const [newPatientsCount, setNewPatientsCount] = useState(10);
   const [newMessagesCount, setNewMessagesCount] = useState(1);
+  const [paymentsSummary, setPaymentsSummary] = useState({
+    total: 10,
+    pending: 2,
+    successful: 8,
+  });
+  const [appointmentsData, setAppointmentsData] = useState(appointments);
+
+  const paymentsTotal = paymentsSummary.total || 0;
+  const successfulPercentage =
+    paymentsTotal > 0
+      ? (paymentsSummary.successful / paymentsTotal) * 100
+      : 0;
+  const pendingPercentage =
+    paymentsTotal > 0
+      ? (paymentsSummary.pending / paymentsTotal) * 100
+      : 0;
+  const otherPercentage = Math.max(
+    100 - successfulPercentage - pendingPercentage,
+    0
+  );
+
+  const paymentSegments = [
+    { label: "Successful", value: successfulPercentage, color: "#6685FF" },
+    { label: "Pending", value: pendingPercentage, color: "#E5E7EB" },
+  ];
+
+  if (otherPercentage > 0) {
+    paymentSegments.push({
+      label: "Other",
+      value: otherPercentage,
+      color: "#000000",
+    });
+  }
+
+  const paymentCompletion = Math.round(successfulPercentage);
+
+  const upcomingAppointments = appointmentsData.filter(
+    (appointment) => appointment.status === "upcoming"
+  ).length;
+  const emergencyAppointments = appointmentsData.filter(
+    (appointment) => appointment.status === "emergency"
+  ).length;
+  const completedAppointments = appointmentsData.filter(
+    (appointment) => appointment.status === "completed"
+  ).length;
+  const cancelledAppointments = appointmentsData.filter(
+    (appointment) => appointment.status === "cancelled"
+  ).length;
+
+  const appointmentSummaryCards = [
+    {
+      label: "Upcoming",
+      value: upcomingAppointments,
+      description: "Scheduled consultations",
+      accent: "#6685FF",
+    },
+    {
+      label: "Completed",
+      value: completedAppointments,
+      description: "Finished sessions",
+      accent: "#10B981",
+    },
+    {
+      label: "Emergency",
+      value: emergencyAppointments,
+      description: "Critical follow-ups",
+      accent: "#EF4444",
+    },
+    {
+      label: "Cancelled",
+      value: cancelledAppointments,
+      description: "Needs rescheduling",
+      accent: "#F97316",
+    },
+  ];
 
   // Revolving icons animation
   useEffect(() => {
@@ -167,19 +242,6 @@ export default function DoctorHome() {
       setRotation((prev) => (prev + 1) % 360);
     }, 30);
     return () => clearInterval(interval);
-  }, []);
-
-  // Update pie chart size based on container
-  useEffect(() => {
-    const updateSize = () => {
-      if (pieChartRef.current) {
-        const size = pieChartRef.current.offsetWidth;
-        setPieChartSize(size);
-      }
-    };
-    updateSize();
-    window.addEventListener("resize", updateSize);
-    return () => window.removeEventListener("resize", updateSize);
   }, []);
 
   // TODO: Replace this with real API calls when integration is ready
@@ -330,8 +392,8 @@ export default function DoctorHome() {
             className="relative overflow-hidden"
             style={{ backgroundColor: "#9EB1FE" }}
           >
-            <CardContent className="p-6 sm:p-8">
-              <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
                 <div className="flex-1">
                   <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 font-roboto">
                     Hello, {doctorName}
@@ -348,7 +410,7 @@ export default function DoctorHome() {
                     Chat with a patient
                   </Button>
                 </div>
-                <div className="relative w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] flex items-center justify-center">
+                <div className="relative w-[260px] h-[260px] sm:w-[320px] sm:h-[320px] flex items-center justify-center">
                   {/* Wavy background circle */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <svg
@@ -614,51 +676,28 @@ export default function DoctorHome() {
               </CardHeader>
               <CardContent>
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-                  {/* Pie Chart Container - Must be relative for absolute positioning */}
-                  <div
-                    ref={pieChartRef}
-                    className="relative w-40 h-40 sm:w-48 sm:h-48 shrink-0"
+                  <ProgressTracker
+                    segments={paymentSegments}
+                    size={190}
+                    thickness={26}
+                    className="shrink-0"
                   >
-                    <ResponsiveContainer
-                      width={pieChartSize}
-                      height={pieChartSize}
-                    >
-                      <PieChart>
-                        <Pie
-                          data={paymentsData}
-                          cx={pieChartSize / 2}
-                          cy={pieChartSize / 2}
-                          innerRadius={0}
-                          outerRadius={pieChartSize / 2 - 5}
-                          dataKey="value"
-                          startAngle={90}
-                          endAngle={-270}
-                        >
-                          {paymentsData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.fill} />
-                          ))}
-                        </Pie>
-                      </PieChart>
-                    </ResponsiveContainer>
-
-                    {/* Center text overlay - Positioned absolutely within relative container */}
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-                      <div className="text-center">
-                        <p className="text-2xl sm:text-3xl font-bold font-roboto text-black">
-                          45<span className="text-lg sm:text-xl">%</span>
-                        </p>
-                        <p className="text-xs sm:text-sm text-muted-foreground font-roboto mt-1">
-                          PAYMENTS
-                        </p>
-                      </div>
+                    <div className="text-center">
+                      <p className="text-2xl sm:text-3xl font-bold font-roboto text-black">
+                        {paymentCompletion}
+                        <span className="text-lg sm:text-xl">%</span>
+                      </p>
+                      <p className="text-xs sm:text-sm text-muted-foreground font-roboto mt-1">
+                        PAYMENTS
+                      </p>
                     </div>
-                  </div>
+                  </ProgressTracker>
 
                   {/* Statistics Card */}
                   <div className="flex-1 bg-gray-100 rounded-lg p-4 sm:p-6 space-y-4 sm:space-y-6">
                     <div className="space-y-1">
                       <p className="text-2xl sm:text-3xl font-bold font-roboto text-black">
-                        10
+                        {paymentsSummary.total}
                       </p>
                       <p className="text-sm sm:text-base text-muted-foreground font-roboto">
                         Total payments
@@ -666,7 +705,7 @@ export default function DoctorHome() {
                     </div>
                     <div className="space-y-1">
                       <p className="text-2xl sm:text-3xl font-bold font-roboto text-black">
-                        2
+                        {paymentsSummary.pending}
                       </p>
                       <p className="text-sm sm:text-base text-muted-foreground font-roboto">
                         Pending payments
@@ -674,7 +713,7 @@ export default function DoctorHome() {
                     </div>
                     <div className="space-y-1">
                       <p className="text-2xl sm:text-3xl font-bold font-roboto text-black">
-                        8
+                        {paymentsSummary.successful}
                       </p>
                       <p className="text-sm sm:text-base text-muted-foreground font-roboto">
                         Successful payments
@@ -698,10 +737,31 @@ export default function DoctorHome() {
                 </Button>
               </Link>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {appointmentSummaryCards.map((card) => (
+                  <div
+                    key={card.label}
+                    className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm"
+                  >
+                    <p
+                      className="text-sm font-medium uppercase tracking-wide"
+                      style={{ color: card.accent }}
+                    >
+                      {card.label}
+                    </p>
+                    <p className="text-2xl font-bold font-roboto mt-2">
+                      {card.value}
+                    </p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {card.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
               <div className="overflow-x-auto pb-4">
                 <div className="flex gap-4 min-w-max">
-                  {appointments.map((appointment) => (
+                  {appointmentsData.map((appointment) => (
                     <div
                       key={appointment.id}
                       className="min-w-[200px] sm:min-w-[250px] rounded-lg p-4 text-white relative"
