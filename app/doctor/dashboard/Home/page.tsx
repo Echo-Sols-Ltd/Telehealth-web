@@ -8,7 +8,6 @@ import {
   MoreVertical,
   ShieldAlert,
   BarChart3,
-  AlertTriangle,
 } from "lucide-react";
 import type { UserData } from "@/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -46,7 +45,7 @@ const emergencies = [
   {
     id: 1,
     icon: ShieldAlert,
-    iconColor: "#3B82F6",
+    iconColor: "#526ACC",
     title:
       "Clara's blood pressure surpassed normal range. Give her advice on how to retain her normal range...",
     time: "11:30 PM",
@@ -54,15 +53,15 @@ const emergencies = [
   {
     id: 2,
     icon: BarChart3,
-    iconColor: "#92400E",
+    iconColor: "#836206",
     title:
       "Recurring appendicitis in Patient ID: 0012. Here are some suggestions on how to reduce the...",
     time: "11:30 PM",
   },
   {
     id: 3,
-    icon: AlertTriangle,
-    iconColor: "#EF4444",
+    icon: ShieldAlert,
+    iconColor: "#A0616A",
     title:
       "Clara's blood pressure surpassed normal range. Give her advice on how to retain her normal range...",
     time: "11:30 PM",
@@ -169,13 +168,9 @@ export default function DoctorHome() {
 
   const paymentsTotal = paymentsSummary.total || 0;
   const successfulPercentage =
-    paymentsTotal > 0
-      ? (paymentsSummary.successful / paymentsTotal) * 100
-      : 0;
+    paymentsTotal > 0 ? (paymentsSummary.successful / paymentsTotal) * 100 : 0;
   const pendingPercentage =
-    paymentsTotal > 0
-      ? (paymentsSummary.pending / paymentsTotal) * 100
-      : 0;
+    paymentsTotal > 0 ? (paymentsSummary.pending / paymentsTotal) * 100 : 0;
   const otherPercentage = Math.max(
     100 - successfulPercentage - pendingPercentage,
     0
@@ -362,7 +357,7 @@ export default function DoctorHome() {
                 size="icon"
                 className="h-10 w-10 sm:h-12 sm:w-12"
               >
-                <Bell className="h-5 w-5 sm:h-6 sm:w-6" />
+                <Bell className="h-6 w-6 sm:h-7 sm:w-7 fill-[#061242]" />
               </Button>
               <Button
                 variant="ghost"
@@ -395,22 +390,24 @@ export default function DoctorHome() {
             <CardContent className="p-4 sm:p-6">
               <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
                 <div className="flex-1">
-                  <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 font-roboto">
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-3 font-roboto">
                     Hello, {doctorName}
                   </h2>
-                  <p className="text-white/90 text-sm sm:text-base mb-4 font-roboto">
+                  <p className="text-white/90 text-base sm:text-lg lg:text-xl mb-4 font-roboto">
                     Your patients are counting on you. Stay on top of your
                     consultations, monitor patient health trends all in one
                     place.
                   </p>
-                  <Button
-                    className="text-white font-roboto"
-                    style={{ backgroundColor: "#6685FF" }}
-                  >
-                    Chat with a patient
-                  </Button>
+                  <Link href="/doctor/dashboard/chat">
+                    <Button
+                      className="text-white font-roboto text-base sm:text-lg px-6 py-6 cursor-pointer hover:opacity-90 hover:scale-105 transition-transform duration-200"
+                      style={{ backgroundColor: "#6685FF" }}
+                    >
+                      Chat with a patient
+                    </Button>
+                  </Link>
                 </div>
-                <div className="relative w-[260px] h-[260px] sm:w-[320px] sm:h-[320px] flex items-center justify-center">
+                <div className="relative w-[260px] h-[260px] sm:w-[320px] sm:h-80 flex items-center justify-center">
                   {/* Wavy background circle */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <svg
@@ -483,7 +480,7 @@ export default function DoctorHome() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="h-32 sm:h-40 mb-3">
+                <div className="h-32 sm:h-40 mb-3 animate-chart-entrance">
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={notificationsData}>
                       <defs>
@@ -512,6 +509,10 @@ export default function DoctorHome() {
                         stroke="#EF4444"
                         fillOpacity={1}
                         fill="url(#colorNotifications)"
+                        isAnimationActive={true}
+                        animationBegin={0}
+                        animationDuration={1500}
+                        animationEasing="ease-out"
                       />
                     </AreaChart>
                   </ResponsiveContainer>
@@ -530,7 +531,10 @@ export default function DoctorHome() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="h-32 sm:h-40 mb-3">
+                <div
+                  className="h-32 sm:h-40 mb-3 animate-chart-entrance"
+                  style={{ animationDelay: "100ms" }}
+                >
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={newPatientsData}>
                       <defs>
@@ -559,6 +563,10 @@ export default function DoctorHome() {
                         stroke="#10B981"
                         fillOpacity={1}
                         fill="url(#colorPatients)"
+                        isAnimationActive={true}
+                        animationBegin={100}
+                        animationDuration={1500}
+                        animationEasing="ease-out"
                       />
                     </AreaChart>
                   </ResponsiveContainer>
@@ -577,7 +585,10 @@ export default function DoctorHome() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="h-32 sm:h-40 mb-3">
+                <div
+                  className="h-32 sm:h-40 mb-3 animate-chart-entrance"
+                  style={{ animationDelay: "200ms" }}
+                >
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={newMessagesData}>
                       <defs>
@@ -606,6 +617,10 @@ export default function DoctorHome() {
                         stroke="#9EB1FE"
                         fillOpacity={1}
                         fill="url(#colorMessages)"
+                        isAnimationActive={true}
+                        animationBegin={200}
+                        animationDuration={1500}
+                        animationEasing="ease-out"
                       />
                     </AreaChart>
                   </ResponsiveContainer>
@@ -682,8 +697,8 @@ export default function DoctorHome() {
                     thickness={26}
                     className="shrink-0"
                   >
-                    <div className="text-center">
-                      <p className="text-2xl sm:text-3xl font-bold font-roboto text-black">
+                    <div className="text-center animate-chart-entrance">
+                      <p className="text-2xl sm:text-3xl font-bold font-roboto text-black animate-pulse-glow">
                         {paymentCompletion}
                         <span className="text-lg sm:text-xl">%</span>
                       </p>
@@ -739,10 +754,14 @@ export default function DoctorHome() {
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {appointmentSummaryCards.map((card) => (
+                {appointmentSummaryCards.map((card, index) => (
                   <div
                     key={card.label}
-                    className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm"
+                    className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-all duration-300 hover:shadow-lg hover:scale-105 animate-chart-entrance"
+                    style={{
+                      animationDelay: `${index * 100}ms`,
+                      animationFillMode: "both",
+                    }}
                   >
                     <p
                       className="text-sm font-medium uppercase tracking-wide"
@@ -750,7 +769,7 @@ export default function DoctorHome() {
                     >
                       {card.label}
                     </p>
-                    <p className="text-2xl font-bold font-roboto mt-2">
+                    <p className="text-2xl font-bold font-roboto mt-2 transition-transform duration-300 hover:scale-110">
                       {card.value}
                     </p>
                     <p className="text-sm text-muted-foreground mt-1">
@@ -761,17 +780,21 @@ export default function DoctorHome() {
               </div>
               <div className="overflow-x-auto pb-4">
                 <div className="flex gap-4 min-w-max">
-                  {appointmentsData.map((appointment) => (
+                  {appointmentsData.map((appointment, index) => (
                     <div
                       key={appointment.id}
-                      className="min-w-[200px] sm:min-w-[250px] rounded-lg p-4 text-white relative"
-                      style={{ backgroundColor: appointment.color }}
+                      className="min-w-[200px] sm:min-w-[250px] rounded-lg p-4 text-white relative transition-all duration-300 hover:scale-105 hover:shadow-xl animate-chart-entrance"
+                      style={{
+                        backgroundColor: appointment.color,
+                        animationDelay: `${index * 150}ms`,
+                        animationFillMode: "both",
+                      }}
                     >
                       <div className="absolute top-2 right-2">
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="h-6 w-6 text-white hover:bg-white/20"
+                          className="h-6 w-6 text-white hover:bg-white/20 transition-transform duration-200 hover:rotate-90"
                         >
                           <MoreVertical className="h-4 w-4" />
                         </Button>

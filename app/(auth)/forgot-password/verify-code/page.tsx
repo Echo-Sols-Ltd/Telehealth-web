@@ -155,7 +155,7 @@ function VerifyCodeContent() {
                   `/forgot-password/reset-password?email=${encodeURIComponent(email)}&code=${code.join("")}`
                 );
               }}
-              className="w-full max-w-[638px] rounded-[10px] font-semibold text-white transition-all shadow-md hover:shadow-lg font-roboto-flex"
+              className="w-full max-w-[638px] rounded-[10px] font-semibold text-white transition-all shadow-md hover:shadow-lg font-roboto-flex cursor-pointer"
               style={{
                 backgroundColor: "#6685FF",
                 height: "40px",
@@ -243,7 +243,7 @@ function VerifyCodeContent() {
             <button
               type="submit"
               disabled={isLoading || code.join("").length !== 6}
-              className="w-full max-w-[638px] rounded-[10px] font-semibold text-white transition-all shadow-md hover:shadow-lg disabled:opacity-50 font-roboto-flex"
+              className="w-full max-w-[638px] rounded-[10px] font-semibold text-white transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed font-roboto-flex cursor-pointer"
               style={{
                 backgroundColor: "#6685FF",
                 height: "40px",
@@ -268,7 +268,7 @@ function VerifyCodeContent() {
                   setError("");
                 }
               }}
-              className="text-sm sm:text-base font-roboto-flex hover:underline"
+              className="text-sm sm:text-base font-roboto-flex hover:underline cursor-pointer"
               style={{ color: "#6685FF" }}
             >
               Resend Code

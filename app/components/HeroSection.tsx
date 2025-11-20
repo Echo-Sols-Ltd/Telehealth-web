@@ -88,7 +88,7 @@ const HeroSection = () => {
                     key={item}
                     href={`#${sectionId}`}
                     onClick={(event) => handleMenuItemClick(event, sectionId)}
-                    className={`text-xl font-normal font-roboto text-black hover:text-[#6685FF] transition-all duration-300 transform hover:scale-105 ${isVisible ? "translate-y-0 opacity-100" : "-translate-y-10 opacity-0"}`}
+                    className={`text-xl font-normal font-roboto text-black hover:text-[#6685FF] transition-all duration-300 transform hover:scale-105 cursor-pointer ${isVisible ? "translate-y-0 opacity-100" : "-translate-y-10 opacity-0"}`}
                     style={{ transitionDelay: `${100 + index * 50}ms` }}
                   >
                     {item}
@@ -100,14 +100,14 @@ const HeroSection = () => {
             <div className="flex items-center gap-4">
               <button
                 onClick={() => handleAuthClick("/login")}
-                className={`hidden sm:block px-8 lg:px-12 py-4 lg:py-5 text-xl lg:text-2xl font-semibold font-roboto-flex text-[#061242] bg-white border-2 border-gray-200 rounded-4xl hover:border-[#6685FF] hover:text-[#6685FF] transition-all duration-300 transform hover:scale-105 hover:shadow-lg ${isVisible ? "translate-x-0 opacity-100" : "translate-x-20 opacity-0"}`}
+                className={`hidden sm:block px-8 lg:px-12 py-4 lg:py-5 text-xl lg:text-2xl font-semibold font-roboto-flex text-[#061242] bg-white border-2 border-gray-200 rounded-4xl hover:border-[#6685FF] hover:text-[#6685FF] transition-all duration-300 transform hover:scale-105 hover:shadow-lg cursor-pointer ${isVisible ? "translate-x-0 opacity-100" : "translate-x-20 opacity-0"}`}
                 style={{ transitionDelay: "400ms" }}
               >
                 Login
               </button>
               <button
                 onClick={() => handleAuthClick("/signup")}
-                className={`hidden lg:block px-6 sm:px-8 lg:px-12 py-4 lg:py-5 text-xl lg:text-2xl font-semibold font-roboto-flex text-white bg-[#6685FF] rounded-4xl hover:bg-[#5574ee] transition-all duration-300 transform hover:scale-105 hover:shadow-xl ${isVisible ? "translate-x-0 opacity-100" : "translate-x-20 opacity-0"}`}
+                className={`hidden lg:block px-6 sm:px-8 lg:px-12 py-4 lg:py-5 text-xl lg:text-2xl font-semibold font-roboto-flex text-white bg-[#6685FF] rounded-4xl hover:bg-[#5574ee] transition-all duration-300 transform hover:scale-105 hover:shadow-xl cursor-pointer ${isVisible ? "translate-x-0 opacity-100" : "translate-x-20 opacity-0"}`}
                 style={{ transitionDelay: "500ms" }}
               >
                 Sign Up
@@ -115,7 +115,7 @@ const HeroSection = () => {
             </div>
 
             <button
-              className="lg:hidden p-2 text-[#6685FF] transition-transform duration-300"
+              className="lg:hidden p-2 text-[#6685FF] transition-transform duration-300 cursor-pointer"
               onClick={() => setIsMenuOpen((prev) => !prev)}
               aria-label={
                 isMenuOpen ? "Close navigation menu" : "Open navigation menu"
@@ -158,7 +158,7 @@ const HeroSection = () => {
                       key={item}
                       href={`#${sectionId}`}
                       onClick={(event) => handleMenuItemClick(event, sectionId)}
-                      className="text-lg font-medium text-[#080f2b] transition-colors duration-200 hover:text-[#6685FF]"
+                      className="text-lg font-medium text-[#080f2b] transition-colors duration-200 hover:text-[#6685FF] cursor-pointer"
                     >
                       {item}
                     </a>
@@ -170,7 +170,7 @@ const HeroSection = () => {
                       setIsMenuOpen(false);
                       handleAuthClick("/login");
                     }}
-                    className="w-full rounded-2xl border-2 border-gray-200 px-6 py-3 text-lg font-semibold text-[#061242] transition-all duration-200 hover:border-[#6685FF] hover:text-[#6685FF]"
+                    className="w-full rounded-2xl border-2 border-gray-200 px-6 py-3 text-lg font-semibold text-[#061242] transition-all duration-200 hover:border-[#6685FF] hover:text-[#6685FF] cursor-pointer"
                   >
                     Login
                   </button>
@@ -179,7 +179,7 @@ const HeroSection = () => {
                       setIsMenuOpen(false);
                       handleAuthClick("/signup");
                     }}
-                    className="w-full rounded-2xl bg-[#6685FF] px-6 py-3 text-lg font-semibold text-white transition-all duration-200 hover:bg-[#5574ee]"
+                    className="w-full rounded-2xl bg-[#6685FF] px-6 py-3 text-lg font-semibold text-white transition-all duration-200 hover:bg-[#5574ee] cursor-pointer"
                   >
                     Sign Up
                   </button>
@@ -216,12 +216,12 @@ const HeroSection = () => {
             className={`flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8 transform transition-all duration-1000 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0"}`}
             style={{ transitionDelay: "600ms" }}
           >
-            <button className="w-full sm:w-auto min-w-[250px] sm:min-w-[200px] h-[90px] bg-[#6685FF] text-white text-xl font-semibold font-roboto-flex rounded-[40px] hover:bg-[#5574ee] transition-all duration-300 transform hover:scale-105 hover:shadow-2xl active:scale-95 group ">
+            <button className="w-full sm:w-auto min-w-[250px] sm:min-w-[200px] h-[90px] bg-[#6685FF] text-white text-xl font-semibold font-roboto-flex rounded-[40px] hover:bg-[#5574ee] transition-all duration-300 transform hover:scale-105 hover:shadow-2xl active:scale-95 group cursor-pointer">
               <span className="inline-block group-hover:animate-bounce">
                 Get Started
               </span>
             </button>
-            <button className="w-full sm:w-auto min-w-[250px] sm:min-w-[200px] h-[80px] sm:h-[90px] bg-white text-black text-2xl font-semibold font-roboto-flex rounded-[40px] border border-black hover:bg-black hover:text-white transition-all duration-300 transform hover:scale-105 hover:shadow-2xl active:scale-95">
+            <button className="w-full sm:w-auto min-w-[250px] sm:min-w-[200px] h-[80px] sm:h-[90px] bg-white text-black text-2xl font-semibold font-roboto-flex rounded-[40px] border border-black hover:bg-black hover:text-white transition-all duration-300 transform hover:scale-105 hover:shadow-2xl active:scale-95 cursor-pointer">
               Learn More
             </button>
           </div>

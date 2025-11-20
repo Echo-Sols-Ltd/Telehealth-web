@@ -30,6 +30,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sidebar } from "../components/sidebar";
 import Image from "next/image";
+import { useSpeechRecognition } from "@/hooks/useSpeechRecognition";
 
 // Doctor data
 const doctors = [
@@ -334,7 +335,7 @@ export default function Appointments() {
                 size="icon"
                 className="h-10 w-10 sm:h-12 sm:w-12"
               >
-                <Bell className="h-5 w-5 sm:h-6 sm:w-6" />
+                <Bell className="h-6 w-6 sm:h-7 sm:w-7 fill-[#061242]" />
               </Button>
               <Button
                 variant="ghost"
@@ -967,6 +968,15 @@ function MessagesPage({
   >(PATIENT_CONVERSATIONS[0]?.id ?? null);
   const [messageInput, setMessageInput] = useState("");
 
+  const {
+    supported: speechSupported,
+    listening,
+    transcript,
+    isFinal: isTranscriptFinal,
+    toggleListening,
+    resetTranscript,
+  } = useSpeechRecognition({ lang: "en-US", continuous: false });
+
   const patientAvatar = userAvatar || "/images/@profile.png";
 
   const filteredConversations = conversations.filter(
@@ -1064,6 +1074,32 @@ function MessagesPage({
     }
   };
 
+  useEffect(() => {
+    if (!transcript) return;
+    setMessageInput(transcript);
+  }, [transcript]);
+
+  useEffect(() => {
+    if (isTranscriptFinal) {
+      // patient can press send after final result
+    }
+  }, [isTranscriptFinal]);
+
+  const handleMicClick = () => {
+    if (!speechSupported) {
+      alert(
+        "Voice input is not supported in this browser. Please use a modern browser like Chrome or Edge."
+      );
+      return;
+    }
+
+    if (!listening) {
+      resetTranscript();
+    }
+
+    toggleListening();
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -1075,7 +1111,7 @@ function MessagesPage({
             <MessageCircle className="h-5 w-5" />
           </Button>
           <Button variant="ghost" size="icon" className="h-10 w-10">
-            <Bell className="h-5 w-5" />
+            <Bell className="h-6 w-6 sm:h-7 sm:w-7 fill-[#061242]" />
           </Button>
         </div>
       </div>
@@ -1242,6 +1278,18 @@ function MessagesPage({
                     placeholder="Type something..."
                     className="flex-1 bg-blue-50 border-0 h-12 rounded-full px-4"
                   />
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={handleMicClick}
+                    className={`h-10 w-10 rounded-full ${
+                      listening
+                        ? "bg-[#526ACC] text-white animate-pulse"
+                        : ""
+                    }`}
+                  >
+                    <MessageCircle className="h-5 w-5" />
+                  </Button>
                   <Button
                     variant="ghost"
                     size="icon"

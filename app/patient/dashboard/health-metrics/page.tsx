@@ -193,7 +193,7 @@ export default function HealthMetrics() {
                 size="icon"
                 className="h-10 w-10 sm:h-12 sm:w-12"
               >
-                <Bell className="h-5 w-5 sm:h-6 sm:w-6" />
+                <Bell className="h-6 w-6 sm:h-7 sm:w-7 fill-[#061242]" />
               </Button>
               <Button
                 variant="ghost"
@@ -257,7 +257,12 @@ export default function HealthMetrics() {
                     fontSize={14}
                     fontFamily="Roboto"
                   />
-                  <Tooltip />
+                  <Tooltip
+                    animationDuration={300}
+                    contentStyle={{
+                      animation: "chart-fade-in 0.3s ease-out",
+                    }}
+                  />
                   <Legend
                     wrapperStyle={{
                       paddingTop: "20px",
@@ -271,7 +276,11 @@ export default function HealthMetrics() {
                     stroke="#455A64"
                     name="Temperature"
                     strokeWidth={2.5}
-                    dot={{ r: 5 }}
+                    dot={{ r: 5, fill: "#455A64" }}
+                    isAnimationActive={true}
+                    animationBegin={0}
+                    animationDuration={1200}
+                    animationEasing="ease-out"
                   />
                   <Line
                     type="monotone"
@@ -279,7 +288,11 @@ export default function HealthMetrics() {
                     stroke="#34A853"
                     name="Blood Pressure"
                     strokeWidth={2.5}
-                    dot={{ r: 5 }}
+                    dot={{ r: 5, fill: "#34A853" }}
+                    isAnimationActive={true}
+                    animationBegin={150}
+                    animationDuration={1200}
+                    animationEasing="ease-out"
                   />
                   <Line
                     type="monotone"
@@ -287,7 +300,11 @@ export default function HealthMetrics() {
                     stroke="#526ACC"
                     name="Heart Rate"
                     strokeWidth={2.5}
-                    dot={{ r: 5 }}
+                    dot={{ r: 5, fill: "#526ACC" }}
+                    isAnimationActive={true}
+                    animationBegin={300}
+                    animationDuration={1200}
+                    animationEasing="ease-out"
                   />
                   <Line
                     type="monotone"
@@ -295,7 +312,11 @@ export default function HealthMetrics() {
                     stroke="#C99604"
                     name="Glucose Levels"
                     strokeWidth={2.5}
-                    dot={{ r: 5 }}
+                    dot={{ r: 5, fill: "#C99604" }}
+                    isAnimationActive={true}
+                    animationBegin={450}
+                    animationDuration={1200}
+                    animationEasing="ease-out"
                   />
                 </LineChart>
               </ResponsiveContainer>

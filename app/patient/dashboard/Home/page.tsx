@@ -257,7 +257,7 @@ export default function Dashboard() {
                 size="icon"
                 className="h-10 w-10 sm:h-12 sm:w-12"
               >
-                <Bell className="h-5 w-5 sm:h-6 sm:w-6 fill-[#061242]" />
+                <Bell className="h-6 w-6 sm:h-7 sm:w-7 fill-[#061242]" />
               </Button>
               <Button
                 variant="ghost"
@@ -283,7 +283,14 @@ export default function Dashboard() {
             {metrics.map((metric, index) => {
               const IconComponent = metric.icon;
               return (
-                <Card key={index} className="bg-card border border-border">
+                <Card 
+                  key={index} 
+                  className="bg-card border border-border animate-chart-entrance animate-card-float"
+                  style={{
+                    animationDelay: `${index * 100}ms`,
+                    animationFillMode: "both",
+                  }}
+                >
                   <CardContent className="pt-4 sm:pt-6">
                     <div className="space-y-2">
                       <p className="text-sm sm:text-base font-medium text-muted-foreground font-roboto">
@@ -299,7 +306,7 @@ export default function Dashboard() {
                           </p>
                         </div>
                         <IconComponent
-                          className="h-6 w-6 sm:h-7 sm:w-7"
+                          className="h-6 w-6 sm:h-7 sm:w-7 transition-transform duration-300 hover:scale-110"
                           style={{ color: metric.color.split("-")[1] }}
                         />
                       </div>
@@ -352,7 +359,12 @@ export default function Dashboard() {
                       fontFamily="Roboto"
                     />
                     <YAxis fontSize={14} fontFamily="Roboto" />
-                    <Tooltip />
+                    <Tooltip 
+                      animationDuration={300}
+                      contentStyle={{
+                        animation: "chart-fade-in 0.3s ease-out",
+                      }}
+                    />
                     <Legend
                       wrapperStyle={{
                         paddingTop: "20px",
@@ -366,7 +378,11 @@ export default function Dashboard() {
                       stroke="#3B82F6"
                       name="Heart Rate"
                       strokeWidth={2.5}
-                      dot={{ r: 5 }}
+                      dot={{ r: 5, fill: "#3B82F6" }}
+                      isAnimationActive={true}
+                      animationBegin={0}
+                      animationDuration={1000}
+                      animationEasing="ease-out"
                       className="text-[#526ACC]"
                     />
                     <Line
@@ -375,7 +391,11 @@ export default function Dashboard() {
                       stroke="#000000"
                       name="Blood Pressure"
                       strokeWidth={2.5}
-                      dot={{ r: 5 }}
+                      dot={{ r: 5, fill: "#000000" }}
+                      isAnimationActive={true}
+                      animationBegin={200}
+                      animationDuration={1000}
+                      animationEasing="ease-out"
                       className="text-[#000000]"
                     />
                   </LineChart>
@@ -401,15 +421,25 @@ export default function Dashboard() {
                       outerRadius={80}
                       paddingAngle={5}
                       dataKey="value"
+                      isAnimationActive={true}
+                      animationBegin={0}
+                      animationDuration={1500}
+                      animationEasing="ease-out"
                     >
                       {progressData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.fill} />
+                        <Cell 
+                          key={`cell-${index}`} 
+                          fill={entry.fill}
+                          style={{
+                            transition: "all 0.3s ease",
+                          }}
+                        />
                       ))}
                     </Pie>
                   </PieChart>
                 </ResponsiveContainer>
-                <div className="text-center mt-4">
-                  <p className="text-3xl sm:text-4xl font-bold font-roboto">
+                <div className="text-center mt-4 animate-chart-entrance">
+                  <p className="text-3xl sm:text-4xl font-bold font-roboto animate-pulse-glow">
                     10%
                   </p>
                   <p className="text-sm sm:text-base text-muted-foreground font-roboto">
@@ -467,10 +497,17 @@ export default function Dashboard() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {getFilteredAppointments().map((appointment) => (
-                    <TableRow key={appointment.id}>
+                  {getFilteredAppointments().map((appointment, index) => (
+                    <TableRow 
+                      key={appointment.id}
+                      className="animate-chart-entrance transition-all duration-200 hover:bg-gray-50"
+                      style={{
+                        animationDelay: `${index * 50}ms`,
+                        animationFillMode: "both",
+                      }}
+                    >
                       <TableCell className="flex items-center gap-2 sm:gap-3">
-                        <Avatar className="h-8 w-8 sm:h-10 sm:w-10 shrink-0">
+                        <Avatar className="h-8 w-8 sm:h-10 sm:w-10 shrink-0 transition-transform duration-300 hover:scale-110">
                           <AvatarImage
                             src={appointment.image || "/placeholder.svg"}
                             alt={appointment.name}
@@ -491,7 +528,7 @@ export default function Dashboard() {
                       </TableCell>
                       <TableCell className="hidden md:table-cell">
                         <span
-                          className={`inline-block px-3 sm:px-4 py-1.5 rounded-full text-sm sm:text-base font-medium font-roboto ${
+                          className={`inline-block px-3 sm:px-4 py-1.5 rounded-full text-sm sm:text-base font-medium font-roboto transition-transform duration-200 hover:scale-110 ${
                             appointment.status === "Done"
                               ? "bg-green-100 text-green-700"
                               : appointment.status === "Cancelled"
@@ -507,14 +544,14 @@ export default function Dashboard() {
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="h-8 w-8 sm:h-10 sm:w-10 p-0"
+                            className="h-8 w-8 sm:h-10 sm:w-10 p-0 transition-transform duration-200 hover:scale-110"
                           >
                             <Eye className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
                           </Button>
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="h-8 w-8 sm:h-10 sm:w-10 p-0"
+                            className="h-8 w-8 sm:h-10 sm:w-10 p-0 transition-transform duration-200 hover:scale-110"
                             onClick={() =>
                               handleDeleteAppointment(appointment.id)
                             }

@@ -3,11 +3,12 @@
 import { useEffect, useState } from "react";
 import type { KeyboardEvent } from "react";
 import Image from "next/image";
-import { Bell, Menu, MessageCircle, Plus, Search } from "lucide-react";
+import { Bell, Menu, MessageCircle, Mic, Plus, Search } from "lucide-react";
 import { Sidebar } from "../components/sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useSpeechRecognition } from "@/hooks/useSpeechRecognition";
 
 type Conversation = {
   id: number;
@@ -115,6 +116,15 @@ export default function DoctorChatPage() {
   >(DOCTOR_CONVERSATIONS[0]?.id ?? null);
   const [messageInput, setMessageInput] = useState("");
 
+  const {
+    supported: speechSupported,
+    listening,
+    transcript,
+    isFinal: isTranscriptFinal,
+    toggleListening,
+    resetTranscript,
+  } = useSpeechRecognition({ lang: "en-US", continuous: false });
+
   useEffect(() => {
     if (typeof window === "undefined") return;
     const currentUserStr = localStorage.getItem("currentUser");
@@ -140,6 +150,17 @@ export default function DoctorChatPage() {
       setUserProfileImage(savedProfileImage);
     }
   }, []);
+
+  useEffect(() => {
+    if (!transcript) return;
+    setMessageInput(transcript);
+  }, [transcript]);
+
+  useEffect(() => {
+    if (isTranscriptFinal) {
+      // doctor can press send after final result
+    }
+  }, [isTranscriptFinal]);
 
   const filteredConversations = conversations.filter(
     (conversation) =>
@@ -233,6 +254,21 @@ export default function DoctorChatPage() {
     }
   };
 
+  const handleMicClick = () => {
+    if (!speechSupported) {
+      alert(
+        "Voice input is not supported in this browser. Please use a modern browser like Chrome or Edge."
+      );
+      return;
+    }
+
+    if (!listening) {
+      resetTranscript();
+    }
+
+    toggleListening();
+  };
+
   return (
     <div className="flex min-h-screen bg-[#f5f6fb]">
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
@@ -265,7 +301,7 @@ export default function DoctorChatPage() {
                 <MessageCircle className="h-5 w-5 text-[#0c1a3f]" />
               </Button>
               <Button variant="ghost" size="icon" className="h-10 w-10">
-                <Bell className="h-5 w-5 text-[#0c1a3f]" />
+                <Bell className="h-6 w-6 sm:h-7 sm:w-7 fill-[#061242]" />
               </Button>
               <Avatar className="h-10 w-10 border border-[#e0e6ff]">
                 {userProfileImage ? (
@@ -424,6 +460,18 @@ export default function DoctorChatPage() {
                         placeholder="Type something..."
                         className="flex-1 bg-[#eef0ff] border-0 h-12 rounded-full px-4"
                       />
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={handleMicClick}
+                        className={`h-10 w-10 rounded-full ${
+                          listening
+                            ? "bg-[#526ACC] text-white animate-pulse"
+                            : ""
+                        }`}
+                      >
+                        <Mic className="h-5 w-5" />
+                      </Button>
                       <Button
                         variant="ghost"
                         size="icon"

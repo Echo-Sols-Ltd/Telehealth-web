@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sidebar } from "../components/sidebar";
 import Image from "next/image";
+import { useSpeechRecognition } from "@/hooks/useSpeechRecognition";
 
 interface Message {
   id: string;
@@ -25,6 +26,15 @@ export default function AIConsultation() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const {
+    supported: speechSupported,
+    listening,
+    transcript,
+    isFinal: isTranscriptFinal,
+    toggleListening,
+    resetTranscript,
+  } = useSpeechRecognition({ lang: "en-US", continuous: false });
 
   // Get user initials and profile image from localStorage
   useEffect(() => {
@@ -79,6 +89,19 @@ export default function AIConsultation() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  // Sync live transcript into the input field
+  useEffect(() => {
+    if (!transcript) return;
+    setInputMessage(transcript);
+  }, [transcript]);
+
+  // When a final transcript is received, keep it in the input but stop updating
+  useEffect(() => {
+    if (isTranscriptFinal) {
+      // Do nothing extra for now – user can press send
+    }
+  }, [isTranscriptFinal]);
 
   const handleSendMessage = async (e?: React.FormEvent) => {
     e?.preventDefault();
@@ -136,6 +159,21 @@ export default function AIConsultation() {
       setIsLoading(false);
       inputRef.current?.focus();
     }
+  };
+
+  const handleMicClick = () => {
+    if (!speechSupported) {
+      alert(
+        "Voice input is not supported in this browser. Please use a modern browser like Chrome or Edge."
+      );
+      return;
+    }
+
+    if (!listening) {
+      resetTranscript();
+    }
+
+    toggleListening();
   };
 
   const formatMessage = (text: string) => {
@@ -373,7 +411,12 @@ export default function AIConsultation() {
               type="button"
               variant="ghost"
               size="icon"
-              className="h-10 w-10 sm:h-12 sm:w-12 shrink-0 bg-[#526ACC] rounded-4xl hover:bg-[#526ACC]/80"
+              onClick={handleMicClick}
+              className={`h-10 w-10 sm:h-12 sm:w-12 shrink-0 rounded-4xl ${
+                listening
+                  ? "bg-[#526ACC] animate-pulse"
+                  : "bg-[#526ACC] hover:bg-[#526ACC]/80"
+              }`}
             >
               <Mic className="h-5 w-5 sm:h-6 sm:w-6" />
             </Button>

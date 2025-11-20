@@ -141,7 +141,7 @@ export default function LoginPage() {
             <div className="text-right mb-4">
               <button
                 onClick={() => router.push("/forgot-password")}
-                className="text-sm sm:text-base font-roboto-flex hover:underline"
+                className="text-sm sm:text-base font-roboto-flex hover:underline cursor-pointer"
                 style={{ color: "#6685FF" }}
               >
                 Forgot password?
@@ -151,7 +151,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-5 px-6 rounded-lg font-semibold text-white transition-all duration-300 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 font-roboto-flex"
+              className="w-full py-5 px-6 rounded-lg font-semibold text-white transition-all duration-300 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 font-roboto-flex cursor-pointer"
               style={{ backgroundColor: "#6685FF" }}
             >
               {isLoading ? "Logging in..." : "Log In"}
@@ -169,7 +169,7 @@ export default function LoginPage() {
           <div className="flex justify-center gap-4 sm:gap-6 mb-6">
             <button
               onClick={() => handleSocialLogin("Google")}
-              className="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 active:scale-95"
+              className="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer"
               aria-label="Sign in with Google"
             >
               <svg width="24" height="24" viewBox="0 0 24 24">
@@ -193,7 +193,7 @@ export default function LoginPage() {
             </button>
             <button
               onClick={() => handleSocialLogin("Apple")}
-              className="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 active:scale-95"
+              className="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer"
               aria-label="Sign in with Apple"
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="#000000">
@@ -202,7 +202,7 @@ export default function LoginPage() {
             </button>
             <button
               onClick={() => handleSocialLogin("LinkedIn")}
-              className="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 active:scale-95"
+              className="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer"
               aria-label="Sign in with LinkedIn"
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="#0077B5">
@@ -211,7 +211,7 @@ export default function LoginPage() {
             </button>
             <button
               onClick={() => handleSocialLogin("Twitter/X")}
-              className="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 active:scale-95"
+              className="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer"
               aria-label="Sign in with X"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="#000000">
@@ -224,7 +224,7 @@ export default function LoginPage() {
             Don't have an account?{" "}
             <button
               onClick={() => router.push("/signup")}
-              className="font-semibold hover:underline font-roboto-flex"
+              className="font-semibold hover:underline font-roboto-flex cursor-pointer"
               style={{ color: "#6685FF" }}
             >
               Sign Up

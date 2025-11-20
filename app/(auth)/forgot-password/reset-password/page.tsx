@@ -228,7 +228,7 @@ function ResetPasswordContent() {
             <button
               type="submit"
               disabled={isLoading || !password || !confirmPassword}
-              className="w-full max-w-[638px] rounded-[10px] font-semibold text-white transition-all shadow-md hover:shadow-lg disabled:opacity-50 font-roboto-flex"
+              className="w-full max-w-[638px] rounded-[10px] font-semibold text-white transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed font-roboto-flex cursor-pointer"
               style={{
                 backgroundColor: "#6685FF",
                 height: "40px",
@@ -247,7 +247,7 @@ function ResetPasswordContent() {
           <div className="text-center mt-6">
             <button
               onClick={() => router.push("/login")}
-              className="text-sm sm:text-base font-roboto-flex hover:underline"
+              className="text-sm sm:text-base font-roboto-flex hover:underline cursor-pointer"
               style={{ color: "#6685FF" }}
             >
               Back to Login

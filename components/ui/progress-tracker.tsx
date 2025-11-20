@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
 type ProgressSegment = {
@@ -25,9 +26,17 @@ export function ProgressTracker({
   className,
   children,
 }: ProgressTrackerProps) {
+  const [animatedValue, setAnimatedValue] = useState(0);
   const positiveSegments = segments.filter((segment) => segment.value > 0);
   const totalValue =
     positiveSegments.reduce((sum, segment) => sum + segment.value, 0) || 1;
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setAnimatedValue(1);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   let accumulated = 0;
   const gradientStops =
@@ -46,25 +55,28 @@ export function ProgressTracker({
 
   return (
     <div
-      className={cn("relative flex items-center justify-center", className)}
+      className={cn("relative flex items-center justify-center animate-chart-entrance", className)}
       style={{ width: size, height: size }}
     >
       <div
-        className="absolute inset-0 rounded-full"
+        className="absolute inset-0 rounded-full transition-all duration-1500 ease-out"
         style={{
           background: `conic-gradient(${gradientStops})`,
+          transform: `rotate(${animatedValue * 360}deg)`,
+          opacity: animatedValue,
         }}
         aria-hidden="true"
       />
 
       <div
-        className="absolute rounded-full"
+        className="absolute rounded-full transition-opacity duration-1000 ease-out"
         style={{
           top: insetAmount,
           right: insetAmount,
           bottom: insetAmount,
           left: insetAmount,
           backgroundColor,
+          opacity: animatedValue,
         }}
         aria-hidden="true"
       />
