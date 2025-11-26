@@ -54,7 +54,7 @@ const metrics = [
     unit: "sys",
     trend: "down",
     icon: TrendingDown,
-    color: "text-[#EC191DB5]",
+    color: "text-red",
   },
   {
     title: "Heart Rate",
@@ -62,7 +62,7 @@ const metrics = [
     unit: "bpm",
     trend: "up",
     icon: TrendingUp,
-    color: "text-[#34A853]",
+    color: "text-green",
   },
   {
     title: "Temperature",
@@ -70,7 +70,7 @@ const metrics = [
     unit: "°c",
     trend: "up",
     icon: TrendingUp,
-    color: "text-[#FF0000B0]",
+    color: "text-red/20",
   },
   {
     title: "Glucose Levels",
@@ -78,7 +78,7 @@ const metrics = [
     unit: "mg/dl",
     trend: "down",
     icon: TrendingDown,
-    color: "text-[#526ACC]",
+    color: "text-blue",
   },
 ];
 
